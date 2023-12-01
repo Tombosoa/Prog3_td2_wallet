@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: STD22098 - STD22106
 servers:
-  - url: https://www.test.com
+  - url: http://localhost:8080
 tags:
   - name: User 
   - name: Account
@@ -18,10 +18,6 @@ paths:
       summary: get all users 
       description: This will return a list of user
       operationId: getUsers
-      parameters:
-        - in: query
-          name: queryPagination
-          $ref: '#/components/parameters/queryPagination'
       responses:
         '200':
           $ref: '#/components/responses/UserListSuccess'
@@ -44,11 +40,11 @@ paths:
           $ref: '#/components/responses/UserSuccess'
 
   /user:
-    put:
+    post:
       tags:
         - User
-      summary: Create or update a user
-      operationId: CrupdateUser
+      summary: Create new user
+      operationId: CreateUser
       requestBody:
         content:
           application/json:
@@ -56,6 +52,19 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200': 
+          $ref: '#/components/responses/UserSuccess'
+    put:
+      tags:
+        - User
+      summary: update user 
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
           $ref: '#/components/responses/UserSuccess'
 
   /users/{uid}:
@@ -109,11 +118,25 @@ paths:
           $ref: '#/components/responses/AccountSuccess'
 
   /account:
+    post:
+      tags:
+        - Account
+      summary: Create new account
+      operationId: CreateAccount
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200': 
+          $ref: '#/components/responses/AccountSuccess'
+      
     put:
       tags:
         - Account
-      summary: Create or update an account
-      operationId: CrupdateAccount
+      summary: Update account
+      operationId: updateAccount
       requestBody:
         content:
           application/json:
@@ -174,11 +197,25 @@ paths:
           $ref: '#/components/responses/TransactionSuccess'
 
   /transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Create a transaction 
+      operationId: CreateTransaction
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200': 
+          $ref: '#/components/responses/TransactionSuccess'
+    
     put:
       tags:
         - Transaction
-      summary: Create or update a transaction 
-      operationId: CrupdateTransaction
+      summary: update a transaction 
+      operationId: updateTransaction
       requestBody:
         content:
           application/json:
@@ -239,11 +276,25 @@ paths:
           $ref: '#/components/responses/DeviseSuccess'
 
   /devise:
+    post:
+      tags:
+        - Devise 
+      summary: Create a devise 
+      operationId: CreateDevise
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Devise'
+      responses:
+        '200': 
+          $ref: '#/components/responses/DeviseSuccess'
+
     put:
       tags:
         - Devise 
-      summary: Create or update a devise 
-      operationId: CrupdateDevise
+      summary: update a devise 
+      operationId: UpdateDevise
       requestBody:
         content:
           application/json:

@@ -7,23 +7,28 @@ import java.util.List;
 
 public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
-    public List<Transaction> getAll() {
+    public List<Transaction> findAll() {
         return null;
     }
 
     @Override
-    public Transaction add(Transaction toAdd) {
+    public List<Transaction> saveAll(List<Transaction> toSave) {
         return null;
     }
 
     @Override
-    public void updateCustomer(Transaction toUpdate) {
-
+    public Transaction save(Transaction toAdd) {
+        return null;
     }
 
     @Override
-    public void deleteCustomer(Transaction toDelete) {
+    public Transaction update(Transaction toUpdate) {
+return null;
+    }
 
+    @Override
+    public Transaction delete(Transaction toDelete) {
+    return null;
     }
 
     @Override

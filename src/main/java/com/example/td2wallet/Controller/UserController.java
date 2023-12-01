@@ -3,11 +3,10 @@ package com.example.td2wallet.Controller;
 import com.example.td2wallet.Entity.User;
 import com.example.td2wallet.Operation.UserOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping
@@ -24,8 +23,28 @@ public class UserController {
         return  userOperation.getAll();
     }
 
+    @GetMapping("/users/{id}")
+    public User getOneUser(@PathVariable("id") UUID id){
+        return userOperation.getOne(id);
+    }
 
-    public User crupdateUser(User user){
+    @PostMapping(path = "/user")
+    public User newUser(@RequestBody User user){
         return userOperation.add(user);
+    }
+
+    @PutMapping("/users")
+    public User updateUser(@RequestBody User user){
+        return userOperation.update(user);
+    }
+
+    @PostMapping("/saveAll")
+    public List<User> saveAllUsers(@RequestBody List<User> users) {
+        return userOperation.saveAll(users);
+    }
+
+    @DeleteMapping(path = "/users/{uid}")
+    public void deleteUser(@PathVariable("uid") UUID uid){
+        userOperation.deleteUser(uid);
     }
 }

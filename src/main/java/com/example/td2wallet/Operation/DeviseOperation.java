@@ -7,23 +7,28 @@ import java.util.List;
 
 public class DeviseOperation implements CrudOperation<Devise> {
     @Override
-    public List<Devise> getAll() {
+    public List<Devise> findAll() {
         return null;
     }
 
     @Override
-    public Devise add(Devise toAdd) {
+    public List<Devise> saveAll(List<Devise> toSave) {
         return null;
     }
 
     @Override
-    public void updateCustomer(Devise toUpdate) {
-
+    public Devise save(Devise toAdd) {
+        return null;
     }
 
     @Override
-    public void deleteCustomer(Devise toDelete) {
+    public Devise update(Devise toUpdate) {
+return null;
+    }
 
+    @Override
+    public Devise delete(Devise toDelete) {
+    return null;
     }
 
     @Override
