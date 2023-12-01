@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping
@@ -22,9 +23,18 @@ public class UserController {
         return  userOperation.getAll();
     }
 
+    @GetMapping("/users/{id}")
+    public User getOneUser(@PathVariable("id") UUID id){
+        return userOperation.getOne(id);
+    }
 
     @PostMapping(path = "/user")
     public User newUser(@RequestBody User user){
         return userOperation.add(user);
+    }
+
+    @DeleteMapping(path = "/users/{uid}")
+    public void deleteUser(@PathVariable("uid") UUID uid){
+        userOperation.deleteUser(uid);
     }
 }

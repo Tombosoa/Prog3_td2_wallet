@@ -7,7 +7,7 @@ import java.util.List;
 public interface CrudOperation<T> {
     public List<T> getAll();
     public T add(T toAdd);
-    public void updateCustomer(T toUpdate);
-    void deleteCustomer(T toDelete);
+    public void update(T toUpdate);
+    T delete(T toDelete);
     T getOne(T one) throws PropertyNotFoundException;
 }

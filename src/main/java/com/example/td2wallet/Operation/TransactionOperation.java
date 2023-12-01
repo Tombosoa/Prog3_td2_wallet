@@ -17,13 +17,13 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     }
 
     @Override
-    public void updateCustomer(Transaction toUpdate) {
+    public void update(Transaction toUpdate) {
 
     }
 
     @Override
-    public void deleteCustomer(Transaction toDelete) {
-
+    public Transaction delete(Transaction toDelete) {
+    return null;
     }
 
     @Override

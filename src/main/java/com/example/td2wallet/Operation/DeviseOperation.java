@@ -17,13 +17,13 @@ public class DeviseOperation implements CrudOperation<Devise> {
     }
 
     @Override
-    public void updateCustomer(Devise toUpdate) {
+    public void update(Devise toUpdate) {
 
     }
 
     @Override
-    public void deleteCustomer(Devise toDelete) {
-
+    public Devise delete(Devise toDelete) {
+    return null;
     }
 
     @Override

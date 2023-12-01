@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UserOperation implements CrudOperation<User> {
@@ -57,15 +58,64 @@ public class UserOperation implements CrudOperation<User> {
         return toAdd;
     }
 
-    @Override
-    public void updateCustomer(User toUpdate) {
+    public User getOne(UUID id) throws PropertyNotFoundException {
+        try {
+            String query = "SELECT * FROM \"user\" WHERE id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setObject(1, id);
 
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                User user = new User();
+                user.setId(String.valueOf(UUID.fromString(resultSet.getString("id"))));
+                user.setUsername(resultSet.getString("username"));
+                user.setEmail(resultSet.getString("email"));
+
+                return user;
+            } else {
+                throw new PropertyNotFoundException("User not found with id: " + id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void deleteCustomer(User toDelete) {
+    public void update(User toUpdate) {
+        try {
+            String query = "UPDATE \"user\" SET username=?, email=? WHERE id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, toUpdate.getUsername());
+            preparedStatement.setString(2, toUpdate.getEmail());
+            preparedStatement.setObject(3, toUpdate.getId());
 
+            preparedStatement.executeUpdate();
+
+            System.out.println("User updated");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+}
+
+    @Override
+    public User delete(User toDelete) {
+        return null;
     }
+
+    public void deleteUser(UUID toDelete) {
+        try {
+            String query = "DELETE FROM \"user\" WHERE id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setObject(1, toDelete);
+            preparedStatement.executeUpdate();
+
+            System.out.println("user deleted");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public User getOne(User one) throws PropertyNotFoundException {

@@ -17,13 +17,13 @@ public class AccountOperation implements CrudOperation<Account>{
     }
 
     @Override
-    public void updateCustomer(Account toUpdate) {
+    public void update(Account toUpdate) {
 
     }
 
     @Override
-    public void deleteCustomer(Account toDelete) {
-
+    public Account delete(Account toDelete) {
+        return null;
     }
 
     @Override
