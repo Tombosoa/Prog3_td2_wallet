@@ -3,9 +3,7 @@ package com.example.td2wallet.Controller;
 import com.example.td2wallet.Entity.User;
 import com.example.td2wallet.Operation.UserOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +23,8 @@ public class UserController {
     }
 
 
-    public User crupdateUser(User user){
+    @PostMapping(path = "/user")
+    public User newUser(@RequestBody User user){
         return userOperation.add(user);
     }
 }
