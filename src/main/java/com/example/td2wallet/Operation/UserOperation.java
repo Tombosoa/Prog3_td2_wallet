@@ -84,7 +84,7 @@ public class UserOperation implements CrudOperation<User> {
     @Override
     public void update(User toUpdate) {
         try {
-            String query = "UPDATE \"user\" SET username=?, email=? WHERE id=?";
+            String query = "UPDATE \"user\" SET username=?, email=? WHERE id=CAST(? AS UUID)";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, toUpdate.getUsername());
             preparedStatement.setString(2, toUpdate.getEmail());

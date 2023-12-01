@@ -33,6 +33,11 @@ public class UserController {
         return userOperation.add(user);
     }
 
+    @PutMapping("/users")
+    public void updateUser(@RequestBody User user){
+        userOperation.update(user);
+    }
+
     @DeleteMapping(path = "/users/{uid}")
     public void deleteUser(@PathVariable("uid") UUID uid){
         userOperation.deleteUser(uid);
