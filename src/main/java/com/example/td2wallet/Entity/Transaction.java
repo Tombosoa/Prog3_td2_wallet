@@ -1,0 +1,55 @@
+package com.example.td2wallet.Entity;
+
+import java.time.LocalDate;
+
+public class Transaction {
+    private int id;
+    private LocalDate transaction_date;
+    private String transaction_type;
+    private int account_id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalDate getTransaction_date() {
+        return transaction_date;
+    }
+
+    public void setTransaction_date(LocalDate transaction_date) {
+        this.transaction_date = transaction_date;
+    }
+
+    public String getTransaction_type() {
+        return transaction_type;
+    }
+
+    public void setTransaction_type(String transaction_type) {
+        this.transaction_type = transaction_type;
+    }
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
+    }
+
+    public Transaction() {
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", transaction_date=" + transaction_date +
+                ", transaction_type='" + transaction_type + '\'' +
+                ", account_id=" + account_id +
+                '}';
+    }
+}

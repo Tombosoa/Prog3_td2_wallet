@@ -1,0 +1,516 @@
+openapi: 3.0.3
+info:
+  title: TD2 Wallet
+  version: 1.0.0
+  description: STD22098 - STD22106
+servers:
+  - url: https://www.test.com
+tags:
+  - name: User 
+  - name: Account
+  - name: Transaction 
+  - name: Devise
+paths:
+  /users:
+    get:
+      tags:
+        - User
+      summary: get all users 
+      description: This will return a list of user
+      operationId: getUsers
+      parameters:
+        - in: query
+          name: queryPagination
+          $ref: '#/components/parameters/queryPagination'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserListSuccess'
+
+  /users/{id}:
+    get:
+      tags:
+        - User
+      summary: get an user by id
+      operationId: getUserById
+      parameters:
+        - in: path
+          name: id 
+          description: get user by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/UserSuccess'
+
+  /user:
+    put:
+      tags:
+        - User
+      summary: Create or update a user
+      operationId: CrupdateUser
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '200': 
+          $ref: '#/components/responses/UserSuccess'
+
+  /users/{uid}:
+    delete:
+      tags:
+        - User
+      summary: delete an user by id
+      operationId: deleteUserById
+      parameters:
+        - in: path
+          name: uid 
+          description: delete user by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/UserSuccess'
+
+
+  /accounts:
+    get:
+      tags:
+        - Account
+      summary: get all account 
+      description: Return a list of account 
+      operationId: getAccounts
+      parameters:
+        - in: query
+          name: queryPagination
+          $ref: '#/components/parameters/queryPagination'
+      responses:
+        '200':
+          $ref: '#/components/responses/AccountListSuccess'
+
+  /account/{id}:
+    get:
+      tags:
+        - Account
+      summary: get an account by id
+      operationId: getAccountById
+      parameters:
+        - in: path
+          name: id 
+          description: get account by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/AccountSuccess'
+
+  /account:
+    put:
+      tags:
+        - Account
+      summary: Create or update an account
+      operationId: CrupdateAccount
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200': 
+          $ref: '#/components/responses/AccountSuccess'
+
+  /account/{uid}:
+    delete:
+      tags:
+        - Account
+      summary: delete an account by id
+      operationId: deleteAccountById
+      parameters:
+        - in: path
+          name: uid 
+          description: delete account by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/AccountSuccess'
+
+
+  /transactions:
+    get:
+      tags:
+        - Transaction
+      summary: get all Transaction 
+      description: Return a list of transaction 
+      operationId: getTransactions
+      parameters:
+        - in: query
+          name: queryPagination
+          $ref: '#/components/parameters/queryPagination'
+      responses:
+        '200':
+          $ref: '#/components/responses/TransactionListSuccess'
+
+  /transaction/{id}:
+    get:
+      tags:
+        - Transaction
+      summary: get a transaction by id
+      operationId: getTransactionById
+      parameters:
+        - in: path
+          name: id 
+          description: get transaction by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/TransactionSuccess'
+
+  /transaction:
+    put:
+      tags:
+        - Transaction
+      summary: Create or update a transaction 
+      operationId: CrupdateTransaction
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200': 
+          $ref: '#/components/responses/TransactionSuccess'
+
+  /transaction/{uid}:
+    delete:
+      tags:
+        - Transaction
+      summary: delete a transaction by id
+      operationId: deleteTransactionById
+      parameters:
+        - in: path
+          name: uid 
+          description: delete transaction by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/TransactionSuccess'
+
+
+  /devises:
+    get:
+      tags:
+        - Devise 
+      summary: get all Devises  
+      description: Return a list of devise  
+      operationId: getDevises
+      parameters:
+        - in: query
+          name: queryPagination
+          $ref: '#/components/parameters/queryPagination'
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviseListSuccess'
+
+  /devise/{id}:
+    get:
+      tags:
+        - Devise
+      summary: get a devise by id
+      operationId: getDeviseById
+      parameters:
+        - in: path
+          name: id 
+          description: get devise by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/DeviseSuccess'
+
+  /devise:
+    put:
+      tags:
+        - Devise 
+      summary: Create or update a devise 
+      operationId: CrupdateDevise
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Devise'
+      responses:
+        '200': 
+          $ref: '#/components/responses/DeviseSuccess'
+
+  /devise/{uid}:
+    delete:
+      tags:
+        - Devise
+      summary: delete a devise by id
+      operationId: deleteDeviseById
+      parameters:
+        - in: path
+          name: uid 
+          description: delete devise by id 
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200': 
+          $ref: '#/components/responses/DeviseSuccess'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: 
+          type: string
+        username:
+          type: string
+        email: 
+          type: string
+        password: 
+          type: string
+    Account:
+      type: object
+      properties:
+        id: 
+          type: integer
+        account_type:
+          type: string
+        user: 
+          $ref: '#/components/schemas/User'
+        devise: 
+          $ref: '#/components/schemas/Devise'
+    Devise:
+      type: object
+      properties:
+        id:
+          type: integer
+        devise_name:
+          type: string
+        devise_country:
+          type: string
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_type:
+          type: string
+        transaction_date:
+          type: string
+          format: date
+        account: 
+          $ref: '#/components/schemas/Account'
+
+    Exception:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            status_code:
+              type: string
+              example: 200
+            message:
+              type: string
+              example: OK
+        body: 
+          type: object
+    
+    ResponseSuccessfully:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+    
+    BadRequest:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+      example:
+        status:
+          status_code: 400
+          message: BAD REQUEST 
+        body: { }
+
+    
+    Forbidden:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+      example:
+        status:
+          status_code: 400
+          message: FORBIDDEN 
+        body: { }
+
+    ServerError:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+      example:
+        status: 
+          status_code: 500
+          message: SERVOR ERROR 
+        body: { }
+
+    UserListBody:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              type: array
+              items: 
+                $ref: '#/components/schemas/User'
+    
+    UserResponse:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              $ref: '#/components/schemas/User'
+
+    AccountListBody:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              type: array
+              items: 
+                $ref: '#/components/schemas/Account'
+
+    AccountResponse:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              $ref: '#/components/schemas/Account'
+
+    TransactionListBody:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              type: array
+              items: 
+                $ref: '#/components/schemas/Account'
+
+    TransactionResponse:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              $ref: '#/components/schemas/Transaction'
+
+    DeviseListBody:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              type: array
+              items: 
+                $ref: '#/components/schemas/Devise'
+
+    DeviseResponse:
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - properties:
+            body:
+              $ref: '#/components/schemas/Devise'
+
+  parameters:
+    queryPagination:
+      name: queryPagination
+      in: query
+      description: for query pagination
+      required: false
+      schema:
+        type: object
+        properties:
+          page:
+            type: integer
+            default: 1
+          size:
+            type: integer
+            default: 50
+    pathPagination:
+      in: path
+      name: pathPagination
+      description: on the path parameter
+      required: true
+      schema: 
+        type: object
+        properties:
+          page:
+            type: integer
+            default: 1
+          size:
+            type: integer
+            default: 50
+
+  responses:
+    UserListSuccess:
+      description: List of User 
+      content:
+        application/json: 
+          schema:
+            $ref: '#/components/schemas/UserListBody'
+    
+    UserSuccess: 
+      description: return an user 
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/UserResponse'
+
+    AccountListSuccess:
+      description: list of account
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/AccountListBody'
+
+    AccountSuccess: 
+      description: return an account 
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/AccountResponse'
+    
+    TransactionListSuccess:
+      description: list of transaction
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/TransactionListBody'
+
+    TransactionSuccess: 
+      description: return a transaction 
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/TransactionResponse'
+
+    DeviseListSuccess:
+      description: list of devise
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/DeviseListBody'
+
+    DeviseSuccess: 
+      description: return a devise  
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/DeviseResponse'
