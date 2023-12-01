@@ -53,6 +53,19 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+    put:
+      tags:
+        - User
+      summary: update user 
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserSuccess'
 
   /users/{uid}:
     delete:
@@ -110,6 +123,20 @@ paths:
         - Account
       summary: Create new account
       operationId: CreateAccount
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200': 
+          $ref: '#/components/responses/AccountSuccess'
+      
+    put:
+      tags:
+        - Account
+      summary: Update account
+      operationId: updateAccount
       requestBody:
         content:
           application/json:
@@ -183,6 +210,20 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+    
+    put:
+      tags:
+        - Transaction
+      summary: update a transaction 
+      operationId: updateTransaction
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200': 
+          $ref: '#/components/responses/TransactionSuccess'
 
   /transaction/{uid}:
     delete:
@@ -240,6 +281,20 @@ paths:
         - Devise 
       summary: Create a devise 
       operationId: CreateDevise
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Devise'
+      responses:
+        '200': 
+          $ref: '#/components/responses/DeviseSuccess'
+
+    put:
+      tags:
+        - Devise 
+      summary: update a devise 
+      operationId: UpdateDevise
       requestBody:
         content:
           application/json:

@@ -7,18 +7,23 @@ import java.util.List;
 
 public class AccountOperation implements CrudOperation<Account>{
     @Override
-    public List<Account> getAll() {
+    public List<Account> findAll() {
         return null;
     }
 
     @Override
-    public Account add(Account toAdd) {
+    public List<Account> saveAll(List<Account> toSave) {
         return null;
     }
 
     @Override
-    public void update(Account toUpdate) {
+    public Account save(Account toAdd) {
+        return null;
+    }
 
+    @Override
+    public Account update(Account toUpdate) {
+return null;
     }
 
     @Override

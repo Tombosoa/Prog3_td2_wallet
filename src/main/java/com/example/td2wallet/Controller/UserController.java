@@ -34,8 +34,13 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public void updateUser(@RequestBody User user){
-        userOperation.update(user);
+    public User updateUser(@RequestBody User user){
+        return userOperation.update(user);
+    }
+
+    @PostMapping("/saveAll")
+    public List<User> saveAllUsers(@RequestBody List<User> users) {
+        return userOperation.saveAll(users);
     }
 
     @DeleteMapping(path = "/users/{uid}")
