@@ -43,7 +43,22 @@ public class AccountOperation implements CrudOperation<Account>{
 
     @Override
     public List<Account> saveAll(List<Account> toSave) {
-        return null;
+        List<Account> savedAccounts = new ArrayList<>();
+        try {
+            for (Account account : toSave) {
+                String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, ?, ?)";
+                PreparedStatement preparedStatement = conn.prepareStatement(query);
+                preparedStatement.setString(1, account.getAccount_name());
+                preparedStatement.setObject(2, account.getUser_id());
+                preparedStatement.setInt(3, account.getDevise_id());
+
+                preparedStatement.executeUpdate();
+                savedAccounts.add(account);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return savedAccounts;
     }
 
     @Override
