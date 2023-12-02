@@ -8,6 +8,17 @@ public class Devise {
     private String devise_name;
     private String devise_country;
 
+    public Devise(String deviseName, String deviseCountry) {
+        this.devise_name =deviseName;
+        this.devise_country=deviseCountry;
+    }
+
+    public Devise(int id, String deviseName, String deviseCountry) {
+       this.id=id;
+        this.devise_name =deviseName;
+        this.devise_country=deviseCountry;
+    }
+
     public int getId() {
         return id;
     }
