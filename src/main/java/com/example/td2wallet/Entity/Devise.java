@@ -46,6 +46,10 @@ public class Devise {
     public Devise() {
     }
 
+    public Devise(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Devise{" +
