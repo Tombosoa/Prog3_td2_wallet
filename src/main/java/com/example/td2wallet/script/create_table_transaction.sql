@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS "transaction" (id SERIAL PRIMARY KEY, transaction_date date, transaction_type varchar(255), transaction_price int, account_id int references account(id));

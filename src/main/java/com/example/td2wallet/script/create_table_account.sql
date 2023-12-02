@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS account (id SERIAL PRIMARY KEY, account_name varchar(255), user_id uuid references "user"(id), devise_id int references devise(id));

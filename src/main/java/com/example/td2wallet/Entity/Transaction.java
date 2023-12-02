@@ -6,6 +6,7 @@ public class Transaction {
     private int id;
     private LocalDate transaction_date;
     private String transaction_type;
+    private int transaction_price;
     private int account_id;
 
     public int getId() {
@@ -14,6 +15,14 @@ public class Transaction {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getTransaction_price() {
+        return transaction_price;
+    }
+
+    public void setTransaction_price(int transaction_price) {
+        this.transaction_price = transaction_price;
     }
 
     public LocalDate getTransaction_date() {

@@ -1,30 +1,28 @@
 package com.example.td2wallet.Entity;
 
-import lombok.Getter;
-import lombok.Setter;
 
 
-public class Account {
-    private int id;
-    private String account_type;
+public class Account extends User{
+    private int account_id;
+    private String account_name;
 
     private String user_id;
     private int devise_id;
 
-    public int getId() {
-        return id;
+    public int getAccount_id() {
+        return account_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 
-    public String getAccount_type() {
-        return account_type;
+    public String getAccount_name() {
+        return account_name;
     }
 
-    public void setAccount_type(String account_type) {
-        this.account_type = account_type;
+    public void setAccount_name(String account_name) {
+        this.account_name = account_name;
     }
 
     public String getUser_id() {
@@ -43,14 +41,31 @@ public class Account {
         this.devise_id = devise_id;
     }
 
+    public Account(String account_name, String user_id, int devise_id) {
+        this.account_name = account_name;
+        this.user_id = user_id;
+        this.devise_id = devise_id;
+    }
+
+    public Account(String username, String email, String account_name) {
+        super(username, email);
+        this.account_name = account_name;
+    }
     public Account() {
+    }
+
+    public Account(int account_id, String account_name, String user_id, int devise_id) {
+        this.account_id = account_id;
+        this.account_name = account_name;
+        this.user_id = user_id;
+        this.devise_id = devise_id;
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
-                ", account_type='" + account_type + '\'' +
+                "account_id=" + account_id +
+                ", account_name='" + account_name + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", devise_id=" + devise_id +
                 '}';

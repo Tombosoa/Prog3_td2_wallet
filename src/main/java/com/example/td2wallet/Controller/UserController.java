@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> getUsers(){
-        return  userOperation.getAll();
+        return  userOperation.findAll();
     }
 
     @GetMapping("/users/{id}")
@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping(path = "/user")
     public User newUser(@RequestBody User user){
-        return userOperation.add(user);
+        return userOperation.save(user);
     }
 
     @PutMapping("/users")
