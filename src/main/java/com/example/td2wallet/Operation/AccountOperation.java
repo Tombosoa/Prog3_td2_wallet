@@ -50,7 +50,7 @@ public class AccountOperation implements CrudOperation<Account>{
                 String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setString(1, account.getAccount_name());
-                preparedStatement.setObject(2, account.getUser_id());
+                preparedStatement.setObject(2, UUID.fromString(account.getUser_id()));
                 preparedStatement.setInt(3, account.getDevise_id());
 
                 preparedStatement.executeUpdate();
