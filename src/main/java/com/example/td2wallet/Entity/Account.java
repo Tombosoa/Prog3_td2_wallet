@@ -1,8 +1,5 @@
 package com.example.td2wallet.Entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class Account extends User{
@@ -54,11 +51,23 @@ public class Account extends User{
         super(username, email);
         this.account_name = account_name;
     }
+    public Account() {
+    }
 
     public Account(int account_id, String account_name, String user_id, int devise_id) {
         this.account_id = account_id;
         this.account_name = account_name;
         this.user_id = user_id;
         this.devise_id = devise_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "account_id=" + account_id +
+                ", account_name='" + account_name + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", devise_id=" + devise_id +
+                '}';
     }
 }
