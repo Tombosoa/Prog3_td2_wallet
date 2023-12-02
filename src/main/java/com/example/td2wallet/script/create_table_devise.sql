@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS devise (id SERIAL PRIMARY KEY, devise_name varchar(255), devise_country varchar(255));
