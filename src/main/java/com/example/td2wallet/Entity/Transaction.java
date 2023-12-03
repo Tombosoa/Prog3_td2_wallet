@@ -9,6 +9,29 @@ public class Transaction {
     private int transaction_price;
     private int account_id;
 
+    public Transaction(int id, LocalDate transaction_date, String transaction_type, int transaction_price, int account_id) {
+        this.id = id;
+        this.transaction_date = transaction_date;
+        this.transaction_type = transaction_type;
+        this.transaction_price = transaction_price;
+        this.account_id = account_id;
+    }
+    public Transaction( LocalDate transaction_date, String transaction_type, int transaction_price, int account_id) {
+        this.transaction_date = transaction_date;
+        this.transaction_type = transaction_type;
+        this.transaction_price = transaction_price;
+        this.account_id = account_id;
+    }
+
+    public Transaction() {
+
+    }
+
+    public Transaction(int id) {
+        this.id=id;
+    }
+
+
     public int getId() {
         return id;
     }
@@ -29,7 +52,7 @@ public class Transaction {
         return transaction_date;
     }
 
-    public void setTransaction_date(LocalDate transaction_date) {
+    public void setTransaction_date( LocalDate transaction_date) {
         this.transaction_date = transaction_date;
     }
 
@@ -49,8 +72,7 @@ public class Transaction {
         this.account_id = account_id;
     }
 
-    public Transaction() {
-    }
+
 
     @Override
     public String toString() {
@@ -61,4 +83,6 @@ public class Transaction {
                 ", account_id=" + account_id +
                 '}';
     }
+
+
 }
