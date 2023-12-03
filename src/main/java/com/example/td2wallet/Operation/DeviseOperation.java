@@ -5,12 +5,14 @@ import com.example.td2wallet.Entity.Account;
 import com.example.td2wallet.Entity.Devise;
 import com.example.td2wallet.Entity.User;
 import jakarta.el.PropertyNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class DeviseOperation implements CrudOperation<Devise> {
 
     String userName = System.getenv("DB_USERNAME");
@@ -128,5 +130,27 @@ public class DeviseOperation implements CrudOperation<Devise> {
         return null;
     }
 
+    public Devise getOne(int id) throws PropertyNotFoundException{
+        try{
+            String query = "select * from devise where id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                Devise devise = new Devise();
+                devise.setId(resultSet.getInt("id"));
+                devise.setDevise_name(resultSet.getString("devise_name"));
+                devise.setDevise_country(resultSet.getString("devise_country"));
+
+                return devise;
+            }else{
+                throw new PropertyNotFoundException("devise not found");
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 
 }
