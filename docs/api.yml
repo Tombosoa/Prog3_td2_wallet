@@ -22,7 +22,7 @@ paths:
         '200':
           $ref: '#/components/responses/UserListSuccess'
 
-  /users/{id}:
+  /user/{id}:
     get:
       tags:
         - User
@@ -67,7 +67,7 @@ paths:
         '200':
           $ref: '#/components/responses/UserSuccess'
 
-  /users/{uid}:
+  /user/{uid}:
     delete:
       tags:
         - User
