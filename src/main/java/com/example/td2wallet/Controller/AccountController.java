@@ -32,12 +32,12 @@ public class AccountController {
         return accountOperation.save(account);
     }
 
-    @PutMapping("/accounts")
+    @PutMapping("/account")
     public Account updateAccount(@RequestBody Account account){
         return accountOperation.update(account);
     }
 
-    @GetMapping("/accounts/{id}")
+    @GetMapping("/account/{id}")
     public Account getOneAccount(@PathVariable("id") int id){
         return accountOperation.getOne(id);
     }

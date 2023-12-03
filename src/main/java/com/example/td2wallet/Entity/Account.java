@@ -9,6 +9,13 @@ public class Account extends User{
     private String user_id;
     private int devise_id;
 
+    public Account(String id, String username, String email, String account_name, int account_id, int devise_id) {
+        super(id, username, email);
+        this.account_id = account_id;
+        this.account_name = account_name;
+        this.devise_id = devise_id;
+    }
+
     public int getAccount_id() {
         return account_id;
     }
@@ -41,6 +48,14 @@ public class Account extends User{
         this.devise_id = devise_id;
     }
 
+    public Account(int account_id, String account_name, String user_id, int devise_id) {
+        super();
+        this.account_id = account_id;
+        this.account_name = account_name;
+        this.user_id = user_id;
+        this.devise_id = devise_id;
+    }
+
     public Account(String account_name, String user_id, int devise_id) {
         this.account_name = account_name;
         this.user_id = user_id;
@@ -54,11 +69,12 @@ public class Account extends User{
     public Account() {
     }
 
-    public Account(int account_id, String account_name, String user_id, int devise_id) {
+    public Account(int account_id, String account_name, String username, String email, int devise_id, String user_id) {
+        super(username, email);
         this.account_id = account_id;
         this.account_name = account_name;
-        this.user_id = user_id;
         this.devise_id = devise_id;
+        this.user_id = user_id;
     }
 
     @Override

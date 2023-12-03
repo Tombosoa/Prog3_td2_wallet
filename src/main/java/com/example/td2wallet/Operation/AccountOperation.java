@@ -25,14 +25,17 @@ public class AccountOperation implements CrudOperation<Account>{
     public List<Account> findAll() {
         List<Account> accountList = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
-            String query = "SELECT username, email, account_name from \"user\" inner join account on account.user_id = \"user\".id";
+            String query = "SELECT account.id as account_id, account_name, devise_id, \"user\".id as user_id, username, email FROM account INNER JOIN \"user\" ON account.user_id = \"user\".id";
             try (ResultSet result = statement.executeQuery(query)) {
                 while (result.next()) {
+                    int account_id = result.getInt("account_id");
+                    String account_name = result.getString("account_name");
+                    int devise_id = result.getInt("devise_id");
+                    String user_id = result.getString("user_id");
                     String username = result.getString("username");
                     String email = result.getString("email");
-                    String account_name = result.getString("account_name");
 
-                    Account account = new Account(username, email, account_name);
+                    Account account = new Account(account_id, account_name, username, email, devise_id, user_id);
                     accountList.add(account);
                 }
             }
@@ -122,7 +125,7 @@ public class AccountOperation implements CrudOperation<Account>{
 
     public Account getOne(int id) throws PropertyNotFoundException {
         try {
-            String query = "SELECT * FROM account WHERE id = ?";
+            String query = "SELECT account.id as id, account_name, devise_id, \"user\".id as user_id, username, email FROM account inner join \"user\" on account.user_id = \"user\".id WHERE account.id = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setObject(1, id);
 
@@ -134,6 +137,10 @@ public class AccountOperation implements CrudOperation<Account>{
                 account.setAccount_name(resultSet.getString("account_name"));
                 account.setUser_id(String.valueOf(UUID.fromString(resultSet.getString("user_id"))));
                 account.setDevise_id(resultSet.getInt("devise_id"));
+                account.setEmail(resultSet.getString("email"));
+                account.setUsername(resultSet.getString("username"));
+                account.setUser_id(resultSet.getString("user_id"));
+                account.setId(resultSet.getString("user_id"));
 
                 return account;
             } else {

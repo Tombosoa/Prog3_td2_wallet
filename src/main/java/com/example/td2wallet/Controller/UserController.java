@@ -23,7 +23,7 @@ public class UserController {
         return  userOperation.findAll();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public User getOneUser(@PathVariable("id") UUID id){
         return userOperation.getOne(id);
     }
