@@ -21,6 +21,12 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
 
   /user/{id}:
     get:
@@ -38,6 +44,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /user:
     post:
@@ -53,6 +66,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
     put:
       tags:
         - User
@@ -66,6 +86,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /user/{uid}:
     delete:
@@ -83,6 +110,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
 
   /accounts:
@@ -99,6 +133,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AccountListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /account/{id}:
     get:
@@ -116,6 +157,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /account:
     post:
@@ -131,6 +179,12 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
       
     put:
       tags:
@@ -145,6 +199,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /account/{uid}:
     delete:
@@ -162,6 +223,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
 
   /transactions:
@@ -178,6 +246,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TransactionListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /transaction/{id}:
     get:
@@ -195,6 +270,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /transaction:
     post:
@@ -209,7 +291,14 @@ paths:
               $ref: '#/components/schemas/Transaction'
       responses:
         '200': 
-          $ref: '#/components/responses/TransactionSuccess'
+          $ref: '#/components/responses/TransactionSuccess' 
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
     
     put:
       tags:
@@ -224,6 +313,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /transaction/{uid}:
     delete:
@@ -241,6 +337,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
 
   /devises:
@@ -257,6 +360,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/DeviseListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /devise/{id}:
     get:
@@ -273,7 +383,14 @@ paths:
             type: string
       responses:
         '200': 
-          $ref: '#/components/responses/DeviseSuccess'
+          $ref: '#/components/responses/DeviseSuccess' 
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /devise:
     post:
@@ -289,6 +406,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/DeviseSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
     put:
       tags:
@@ -303,6 +427,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/DeviseSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
   /devise/{uid}:
     delete:
@@ -320,6 +451,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/DeviseSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
 
 components:
   schemas:
@@ -402,7 +540,7 @@ components:
         - $ref: '#/components/schemas/Exception'
       example:
         status:
-          status_code: 400
+          status_code: 403
           message: FORBIDDEN 
         body: { }
 
