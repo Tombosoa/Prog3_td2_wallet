@@ -125,6 +125,19 @@ public class DeviseOperation implements CrudOperation<Devise> {
         return toDelete;
     }
 
+    public void deleteDevise(int id){
+        try{
+            String query = "DELETE FROM devise where id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
+
+            System.out.println("devise deleted");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public Devise getOne(Devise one) throws PropertyNotFoundException {
         return null;

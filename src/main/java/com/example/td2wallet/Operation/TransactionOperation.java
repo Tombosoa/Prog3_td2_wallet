@@ -4,12 +4,14 @@ import com.example.td2wallet.DataBaseConnection;
 import com.example.td2wallet.Entity.Devise;
 import com.example.td2wallet.Entity.Transaction;
 import jakarta.el.PropertyNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TransactionOperation implements CrudOperation<Transaction> {
     String userName = System.getenv("DB_USERNAME");
     String password = System.getenv("DB_PASSWORD");
@@ -133,5 +135,43 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction getOne(Transaction one) throws PropertyNotFoundException {
         return null;
+    }
+
+    public Transaction getOne(int id) throws PropertyNotFoundException{
+        try {
+            String query = "select * from transaction where id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                Transaction transaction = new Transaction();
+                transaction.setId(resultSet.getInt("id"));
+                transaction.setTransaction_price(resultSet.getInt("transaction_price"));
+                transaction.setTransaction_type(resultSet.getString("transaction_type"));
+                transaction.setTransaction_date(resultSet.getDate("transaction_date").toLocalDate());
+                transaction.setAccount_id(resultSet.getInt("account_id"));
+
+                return transaction;
+            }else{
+                throw new PropertyNotFoundException("transaction not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteTransaction(int id){
+        try {
+            String query = "DELETE FROM transaction where id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
+
+            System.out.println("transaction deleted");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -37,9 +37,9 @@ public class DeviseController {
         return deviseOperation.update(devise);
     }
 
-    @DeleteMapping("/devise")
-    public Devise deleteDevise(@RequestBody Devise devise){
-        return deviseOperation.delete(devise);
+    @DeleteMapping("/devise/{uid}")
+    public void deleteDevise(@PathVariable("uid") int id){
+        deviseOperation.deleteDevise(id);
     }
 
     @GetMapping("/devise/{id}")
