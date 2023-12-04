@@ -5,11 +5,13 @@ import com.example.td2wallet.Entity.Account;
 import com.example.td2wallet.Entity.Devise;
 import com.example.td2wallet.Entity.User;
 import jakarta.el.PropertyNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+@Component
 
 public class DeviseOperation implements CrudOperation<Devise> {
 
