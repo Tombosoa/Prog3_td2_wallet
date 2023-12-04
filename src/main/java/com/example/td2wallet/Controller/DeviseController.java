@@ -28,7 +28,7 @@ public class DeviseController {
       return deviseOperation.save(devise);
     }
 
-    @PutMapping("/UpdateDevise")
+    @PutMapping("/updateDevise")
     public Devise updateDevise(@RequestBody Devise devise){
         return deviseOperation.update(devise);
     }

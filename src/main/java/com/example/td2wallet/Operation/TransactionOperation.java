@@ -4,12 +4,14 @@ import com.example.td2wallet.DataBaseConnection;
 import com.example.td2wallet.Entity.Devise;
 import com.example.td2wallet.Entity.Transaction;
 import jakarta.el.PropertyNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TransactionOperation implements CrudOperation<Transaction> {
     String userName = System.getenv("DB_USERNAME");
     String password = System.getenv("DB_PASSWORD");
