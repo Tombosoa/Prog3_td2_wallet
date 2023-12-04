@@ -21,6 +21,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -42,6 +44,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -62,6 +66,13 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
+
     put:
       tags:
         - User
@@ -75,6 +86,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -97,6 +110,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -118,6 +133,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AccountListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -140,6 +157,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -160,6 +179,12 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '403':
+         $ref: '#/components/schemas/Forbidden'
+        '500':
+         $ref: '#/components/schemas/ServerError'
       
     put:
       tags:
@@ -174,6 +199,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -196,6 +223,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -217,6 +246,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TransactionListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -239,6 +270,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -258,7 +291,9 @@ paths:
               $ref: '#/components/schemas/Transaction'
       responses:
         '200': 
-          $ref: '#/components/responses/TransactionSuccess'
+          $ref: '#/components/responses/TransactionSuccess' 
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -278,6 +313,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -300,6 +337,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -321,6 +360,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/DeviseListSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -342,7 +383,9 @@ paths:
             type: string
       responses:
         '200': 
-          $ref: '#/components/responses/DeviseSuccess'
+          $ref: '#/components/responses/DeviseSuccess' 
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -363,6 +406,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/DeviseSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -382,6 +427,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/DeviseSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -404,6 +451,8 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/DeviseSuccess'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
         '403':
          $ref: '#/components/schemas/Forbidden'
         '500':
@@ -503,7 +552,6 @@ components:
           status_code: 500
           message: SERVOR ERROR 
         body: { }
-
 
     UserListBody:
       allOf:
