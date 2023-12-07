@@ -49,10 +49,10 @@ public class Functionnality {
             String updateAccount = "UPDATE account SET solde = ? WHERE id = ?";
             PreparedStatement newStatement = conn.prepareStatement(updateAccount);
             if (transaction.getType().equals("Debit")){
-                newStatement.setDouble(1, survol.getSolde() + transaction.getAmount());
+                newStatement.setDouble(1, survol.getSolde() - transaction.getAmount());
                 newStatement.setInt(2, transaction.getAccount_id());
             }else if(transaction.getType().equals("Credit")){
-                newStatement.setDouble(1, survol.getSolde() - transaction.getAmount());
+                newStatement.setDouble(1, survol.getSolde() + transaction.getAmount());
                 newStatement.setInt(2, transaction.getAccount_id());
             }
             newStatement.executeUpdate();
