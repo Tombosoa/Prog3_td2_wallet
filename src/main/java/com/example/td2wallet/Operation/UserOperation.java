@@ -36,7 +36,6 @@ public class UserOperation implements CrudOperation<User> {
                 }
             }
         } catch (SQLException e) {
-            // Handle or log the exception appropriately
             throw new RuntimeException("Error fetching users from the database", e);
         }
         return userList;

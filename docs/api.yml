@@ -9,7 +9,7 @@ tags:
   - name: User 
   - name: Account
   - name: Transaction 
-  - name: Devise
+  - name: Currency
 paths:
   /users:
     get:
@@ -21,12 +21,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserListSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
 
   /user/{id}:
     get:
@@ -44,13 +38,6 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /user:
     post:
@@ -66,13 +53,6 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
     put:
       tags:
         - User
@@ -86,13 +66,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/UserSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /user/{uid}:
     delete:
@@ -110,13 +83,6 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/UserSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
 
   /accounts:
@@ -133,13 +99,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AccountListSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /account/{id}:
     get:
@@ -157,39 +116,12 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /account:
-    post:
-      tags:
-        - Account
-      summary: Create new account
-      operationId: CreateAccount
-      requestBody:
-        content:
-          application/json:
-            schema: 
-              $ref: '#/components/schemas/Account'
-      responses:
-        '200': 
-          $ref: '#/components/responses/AccountSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-      
     put:
       tags:
         - Account
-      summary: Update account
+      summary: Update or create an account
       operationId: updateAccount
       requestBody:
         content:
@@ -199,13 +131,6 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /account/{uid}:
     delete:
@@ -223,13 +148,6 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/AccountSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
 
   /transactions:
@@ -246,13 +164,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TransactionListSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /transaction/{id}:
     get:
@@ -270,40 +181,12 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /transaction:
-    post:
-      tags:
-        - Transaction
-      summary: Create a transaction 
-      operationId: CreateTransaction
-      requestBody:
-        content:
-          application/json:
-            schema: 
-              $ref: '#/components/schemas/Transaction'
-      responses:
-        '200': 
-          $ref: '#/components/responses/TransactionSuccess' 
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
-    
     put:
       tags:
         - Transaction
-      summary: update a transaction 
+      summary: update or create a transaction 
       operationId: updateTransaction
       requestBody:
         content:
@@ -313,13 +196,6 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
 
   /transaction/{uid}:
     delete:
@@ -337,22 +213,15 @@ paths:
       responses:
         '200': 
           $ref: '#/components/responses/TransactionSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
 
 
-
-  /devises:
+  /currencies:
     get:
       tags:
-        - Devise 
-      summary: get all Devises  
-      description: Return a list of devise  
-      operationId: getDevises
+        - Currency 
+      summary: get all Currencies  
+      description: Return a list of Currency  
+      operationId: getCurrencies
       parameters:
         - in: query
           name: queryPagination
@@ -360,104 +229,55 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/DeviseListSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
 
-
-  /devise/{id}:
+  /currency/{id}:
     get:
       tags:
-        - Devise
-      summary: get a devise by id
+        - Currency
+      summary: get a currency by id
       operationId: getDeviseById
       parameters:
         - in: path
           name: id 
-          description: get devise by id 
+          description: get currency by id 
           required: true
           schema: 
             type: string
       responses:
         '200': 
-          $ref: '#/components/responses/DeviseSuccess' 
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
+          $ref: '#/components/responses/CurrencySuccess'
 
-
-  /devise:
-    post:
-      tags:
-        - Devise 
-      summary: Create a devise 
-      operationId: CreateDevise
-      requestBody:
-        content:
-          application/json:
-            schema: 
-              $ref: '#/components/schemas/Devise'
-      responses:
-        '200': 
-          $ref: '#/components/responses/DeviseSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
-
+  /currency:
     put:
       tags:
-        - Devise 
-      summary: update a devise 
+        - Currency 
+      summary: update or create a currency 
       operationId: UpdateDevise
       requestBody:
         content:
           application/json:
             schema: 
-              $ref: '#/components/schemas/Devise'
+              $ref: '#/components/schemas/Currency'
       responses:
         '200': 
-          $ref: '#/components/responses/DeviseSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
+          $ref: '#/components/responses/CurrencySuccess'
 
-
-  /devise/{uid}:
+  /currency/{uid}:
     delete:
       tags:
-        - Devise
-      summary: delete a devise by id
+        - Currency
+      summary: delete a currency by id
       operationId: deleteDeviseById
       parameters:
         - in: path
           name: uid 
-          description: delete devise by id 
+          description: delete currency by id 
           required: true
           schema: 
             type: string
       responses:
         '200': 
-          $ref: '#/components/responses/DeviseSuccess'
-        '400':
-          $ref: '#/components/schemas/BadRequest'
-        '403':
-         $ref: '#/components/schemas/Forbidden'
-        '500':
-         $ref: '#/components/schemas/ServerError'
-
+          $ref: '#/components/responses/CurrencySuccess'
 
 components:
   schemas:
@@ -477,29 +297,51 @@ components:
       properties:
         id: 
           type: integer
-        account_type:
+        type:
           type: string
+          enum:
+            - Banque
+            - Espece
+            - Mobile Money
+        name: 
+          type: string
+          example: current account
+        solde:
+          type: integer
         user: 
           $ref: '#/components/schemas/User'
-        devise: 
-          $ref: '#/components/schemas/Devise'
-    Devise:
+        currency: 
+          $ref: '#/components/schemas/Currency'
+        transaction: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    Currency:
       type: object
       properties:
         id:
           type: integer
-        devise_name:
+        name:
           type: string
-        devise_country:
+          example: Euro
+        code:
           type: string
+          example: EUR
 
     Transaction:
       type: object
       properties:
         id:
           type: integer
-        transaction_type:
+        type:
           type: string
+          enum:
+            - Debit
+            - Credit
+        label: 
+          type: string
+        amount:
+          type: integer
         transaction_date:
           type: string
           format: date
@@ -540,7 +382,7 @@ components:
         - $ref: '#/components/schemas/Exception'
       example:
         status:
-          status_code: 403
+          status_code: 400
           message: FORBIDDEN 
         body: { }
 
@@ -601,21 +443,21 @@ components:
             body:
               $ref: '#/components/schemas/Transaction'
 
-    DeviseListBody:
+    CurrencyListBody:
       allOf:
         - $ref: '#/components/schemas/Exception'
         - properties:
             body:
               type: array
               items: 
-                $ref: '#/components/schemas/Devise'
+                $ref: '#/components/schemas/Currency'
 
-    DeviseResponse:
+    CurrencyResponse:
       allOf:
         - $ref: '#/components/schemas/Exception'
         - properties:
             body:
-              $ref: '#/components/schemas/Devise'
+              $ref: '#/components/schemas/Currency'
 
   parameters:
     queryPagination:
@@ -691,15 +533,15 @@ components:
             $ref: '#/components/schemas/TransactionResponse'
 
     DeviseListSuccess:
-      description: list of devise
+      description: list of currency
       content:
         application/json:
           schema: 
-            $ref: '#/components/schemas/DeviseListBody'
+            $ref: '#/components/schemas/CurrencyListBody'
 
-    DeviseSuccess: 
-      description: return a devise  
+    CurrencySuccess: 
+      description: return a currency  
       content:
         application/json:
           schema: 
-            $ref: '#/components/schemas/DeviseResponse'
+            $ref: '#/components/schemas/CurrencyResponse'

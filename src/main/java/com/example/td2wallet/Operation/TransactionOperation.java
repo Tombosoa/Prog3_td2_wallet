@@ -28,11 +28,12 @@ public class TransactionOperation implements CrudOperation<Transaction> {
                 while (result.next()) {
                     int id = result.getInt("id");
                     LocalDate transaction_date = result.getDate("transaction_date").toLocalDate();
-                    String transaction_type = result.getString("transaction_type");
-                    int transaction_price = result.getInt("transaction_price");
+                    String transaction_type = result.getString("type");
+                    double transaction_price = result.getDouble("amount");
                     int account_id = result.getInt("account_id");
+                    String label = result.getString("label");
 
-                    Transaction transaction = new Transaction(id,transaction_date,transaction_type,transaction_price,account_id);
+                    Transaction transaction = new Transaction(id,transaction_date,transaction_type,transaction_price,account_id, label);
                     deviseList.add(transaction);
                 }
             }
@@ -47,12 +48,13 @@ public class TransactionOperation implements CrudOperation<Transaction> {
         List<Transaction> savedTransactions = new ArrayList<>();
         try {
             for (Transaction transaction : toSave) {
-                String query = "INSERT INTO transaction (transaction_date,transaction_type,transaction_price,account_id) VALUES ( ?, ?,?,?)";
+                String query = "INSERT INTO transaction (transaction_date,type,amount,account_id, label) VALUES ( ?, ?,?,?, ?)";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setObject(1, transaction.getTransaction_date());
-                preparedStatement.setString(2, transaction.getTransaction_type());
-                preparedStatement.setInt(3, transaction.getTransaction_price());
+                preparedStatement.setString(2, transaction.getType());
+                preparedStatement.setDouble(3, transaction.getAmount());
                 preparedStatement.setInt(4,transaction.getAccount_id());
+                preparedStatement.setString(5, transaction.getLabel());
 
 
                 preparedStatement.executeUpdate();
@@ -67,12 +69,13 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction save(Transaction toAdd) {
         try {
-            String query = "INSERT INTO transaction (transaction_date,transaction_type,transaction_price,account_id) VALUES ( ?, ?,?,?)";
+            String query = "INSERT INTO transaction (type,amount,account_id, label) VALUES ( ?, ?,?,?)";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setObject(1, toAdd.getTransaction_date());
-            preparedStatement.setString(2, toAdd.getTransaction_type());
-            preparedStatement.setInt(3, toAdd.getTransaction_price());
-            preparedStatement.setInt(4,toAdd.getAccount_id());
+
+            preparedStatement.setString(1, toAdd.getType());
+            preparedStatement.setDouble(2, toAdd.getAmount());
+            preparedStatement.setInt(3,toAdd.getAccount_id());
+            preparedStatement.setString(4, toAdd.getLabel());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,13 +86,14 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction update(Transaction toUpdate) {
         try {
-            String updateQuery = "UPDATE transaction SET transaction_date=?,transaction_type=?,transaction_price=?,account_id=? WHERE id=?";
+            String updateQuery = "UPDATE transaction SET transaction_date=?,type=?,amount=?,account_id=?, label= ? WHERE id=?";
             PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
             updateStatement.setObject(1, toUpdate.getTransaction_date());
-            updateStatement.setString(2, toUpdate.getTransaction_type());
-            updateStatement.setInt(3, toUpdate.getTransaction_price());
+            updateStatement.setString(2, toUpdate.getType());
+            updateStatement.setDouble(3, toUpdate.getAmount());
             updateStatement.setInt(4,toUpdate.getAccount_id());
-            updateStatement.setInt(5, toUpdate.getId());
+            updateStatement.setString(5, toUpdate.getLabel());
+            updateStatement.setInt(6, toUpdate.getId());
             updateStatement.executeUpdate();
 
             String selectQuery = "SELECT * FROM transaction WHERE id=?";
@@ -102,9 +106,10 @@ public class TransactionOperation implements CrudOperation<Transaction> {
                 Transaction updatedTransaction = new Transaction();
                 updatedTransaction.setId(resultSet.getInt("id"));
                 updatedTransaction.setTransaction_date(resultSet.getDate("transaction_date").toLocalDate());
-                updatedTransaction.setTransaction_type(resultSet.getString("transaction_type"));
-                updatedTransaction.setTransaction_price(resultSet.getInt("transaction_price"));
+                updatedTransaction.setType(resultSet.getString("type"));
+                updatedTransaction.setAmount(resultSet.getInt("amount"));
                 updatedTransaction.setAccount_id(resultSet.getInt("account_id"));
+                updatedTransaction.setLabel(resultSet.getString("label"));
 
 
                 System.out.println("transaction updated");
@@ -135,5 +140,44 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction getOne(Transaction one) throws PropertyNotFoundException {
         return null;
+    }
+
+    public Transaction getOne(int id) throws PropertyNotFoundException{
+        try {
+            String query = "select * from transaction where id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                Transaction transaction = new Transaction();
+                transaction.setId(resultSet.getInt("id"));
+                transaction.setAmount(resultSet.getInt("amount"));
+                transaction.setType(resultSet.getString("type"));
+                transaction.setTransaction_date(resultSet.getDate("transaction_date").toLocalDate());
+                transaction.setAccount_id(resultSet.getInt("account_id"));
+                transaction.setLabel(resultSet.getString("label"));
+
+                return transaction;
+            }else{
+                throw new PropertyNotFoundException("transaction not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteTransaction(int id){
+        try {
+            String query = "DELETE FROM transaction where id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
+
+            System.out.println("transaction deleted");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -5,19 +5,8 @@ import lombok.Setter;
 
 public class Devise {
     private int id;
-    private String devise_name;
-    private String devise_country;
-
-    public Devise(String deviseName, String deviseCountry) {
-        this.devise_name =deviseName;
-        this.devise_country=deviseCountry;
-    }
-
-    public Devise(int id, String deviseName, String deviseCountry) {
-       this.id=id;
-        this.devise_name =deviseName;
-        this.devise_country=deviseCountry;
-    }
+    private String name;
+    private String code;
 
     public int getId() {
         return id;
@@ -27,35 +16,42 @@ public class Devise {
         this.id = id;
     }
 
-    public String getDevise_name() {
-        return devise_name;
+    public String getName() {
+        return name;
     }
 
-    public void setDevise_name(String devise_name) {
-        this.devise_name = devise_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDevise_country() {
-        return devise_country;
+    public String getCode() {
+        return code;
     }
 
-    public void setDevise_country(String devise_country) {
-        this.devise_country = devise_country;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Devise(int id, String name, String code) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+    }
+
+    public Devise(String name, String code) {
+        this.name = name;
+        this.code = code;
     }
 
     public Devise() {
-    }
-
-    public Devise(int id) {
-        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Devise{" +
                 "id=" + id +
-                ", devise_name='" + devise_name + '\'' +
-                ", devise_country='" + devise_country + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
                 '}';
     }
 }
