@@ -4,6 +4,15 @@ public class Account extends User {
     private int account_id;
     private String name;
     private String type;
+    private double solde;
+
+    public double getSolde() {
+        return solde;
+    }
+
+    public void setSolde(double solde) {
+        this.solde = solde;
+    }
 
     private String user_id;
     private int currency_id;
@@ -86,11 +95,64 @@ public class Account extends User {
         this.user_id = user_id;
     }
 
+
+
+    public Account(String id, String username, String email, int account_id, String name, String type, double solde, String user_id, int currency_id) {
+        super(id, username, email);
+        this.account_id = account_id;
+        this.name = name;
+        this.type = type;
+        this.solde = solde;
+        this.user_id = user_id;
+        this.currency_id = currency_id;
+    }
+
+    public Account(String username, String email, int account_id, String name, String type, double solde, String user_id, int currency_id) {
+        super(username, email);
+        this.account_id = account_id;
+        this.name = name;
+        this.type = type;
+        this.solde = solde;
+        this.user_id = user_id;
+        this.currency_id = currency_id;
+    }
+
+    public Account(String id, int account_id, String name, String type, double solde, String user_id, int currency_id) {
+        super(id);
+        this.account_id = account_id;
+        this.name = name;
+        this.type = type;
+        this.solde = solde;
+        this.user_id = user_id;
+        this.currency_id = currency_id;
+    }
+
+    public Account(int account_id, String name, String type, double solde, String user_id, int currency_id) {
+        this.account_id = account_id;
+        this.name = name;
+        this.type = type;
+        this.solde = solde;
+        this.user_id = user_id;
+        this.currency_id = currency_id;
+    }
+
+    public Account(String id, String username, String email, String password, int account_id, String name, String type, double solde, String user_id, int currency_id) {
+        super(id, username, email, password);
+        this.account_id = account_id;
+        this.name = name;
+        this.type = type;
+        this.solde = solde;
+        this.user_id = user_id;
+        this.currency_id = currency_id;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
                 "account_id=" + account_id +
                 ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", solde=" + solde +
                 ", user_id='" + user_id + '\'' +
                 ", currency_id=" + currency_id +
                 '}';
