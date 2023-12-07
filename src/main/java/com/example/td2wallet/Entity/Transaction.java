@@ -5,22 +5,34 @@ import java.time.LocalDate;
 public class Transaction {
     private int id;
     private LocalDate transaction_date;
-    private String transaction_type;
-    private int transaction_price;
+    private String type;
+    private double amount;
     private int account_id;
 
-    public Transaction(int id, LocalDate transaction_date, String transaction_type, int transaction_price, int account_id) {
-        this.id = id;
-        this.transaction_date = transaction_date;
-        this.transaction_type = transaction_type;
-        this.transaction_price = transaction_price;
-        this.account_id = account_id;
+    private String label;
+
+    public String getType() {
+        return type;
     }
-    public Transaction( LocalDate transaction_date, String transaction_type, int transaction_price, int account_id) {
-        this.transaction_date = transaction_date;
-        this.transaction_type = transaction_type;
-        this.transaction_price = transaction_price;
-        this.account_id = account_id;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public Transaction() {
@@ -40,13 +52,7 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getTransaction_price() {
-        return transaction_price;
-    }
 
-    public void setTransaction_price(int transaction_price) {
-        this.transaction_price = transaction_price;
-    }
 
     public LocalDate getTransaction_date() {
         return transaction_date;
@@ -56,13 +62,24 @@ public class Transaction {
         this.transaction_date = transaction_date;
     }
 
-    public String getTransaction_type() {
-        return transaction_type;
+    public Transaction(int id, LocalDate transaction_date, String type, double amount, int account_id, String label) {
+        this.id = id;
+        this.transaction_date = transaction_date;
+        this.type = type;
+        this.amount = amount;
+        this.account_id = account_id;
+        this.label = label;
     }
 
-    public void setTransaction_type(String transaction_type) {
-        this.transaction_type = transaction_type;
+    public Transaction(LocalDate transaction_date, String type, double amount, int account_id, String label) {
+        this.transaction_date = transaction_date;
+        this.type = type;
+        this.amount = amount;
+        this.account_id = account_id;
+        this.label = label;
     }
+
+
 
     public int getAccount_id() {
         return account_id;
@@ -73,16 +90,15 @@ public class Transaction {
     }
 
 
-
     @Override
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
                 ", transaction_date=" + transaction_date +
-                ", transaction_type='" + transaction_type + '\'' +
+                ", type='" + type + '\'' +
+                ", amount=" + amount +
                 ", account_id=" + account_id +
+                ", label='" + label + '\'' +
                 '}';
     }
-
-
 }
