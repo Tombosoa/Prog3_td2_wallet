@@ -25,17 +25,17 @@ public class AccountOperation implements CrudOperation<Account>{
     public List<Account> findAll() {
         List<Account> accountList = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
-            String query = "SELECT account.id as account_id, account_name, devise_id, \"user\".id as user_id, username, email FROM account INNER JOIN \"user\" ON account.user_id = \"user\".id";
+            String query = "SELECT account.id as account_id, name, currency_id, \"user\".id as user_id, username, email FROM account INNER JOIN \"user\" ON account.user_id = \"user\".id";
             try (ResultSet result = statement.executeQuery(query)) {
                 while (result.next()) {
                     int account_id = result.getInt("account_id");
-                    String account_name = result.getString("account_name");
-                    int devise_id = result.getInt("devise_id");
+                    String account_name = result.getString("name");
+                    int currency_id = result.getInt("currency_id");
                     String user_id = result.getString("user_id");
                     String username = result.getString("username");
                     String email = result.getString("email");
 
-                    Account account = new Account(account_id, account_name, username, email, devise_id, user_id);
+                    Account account = new Account(account_id, account_name, username, email, currency_id, user_id);
                     accountList.add(account);
                 }
             }
@@ -50,11 +50,12 @@ public class AccountOperation implements CrudOperation<Account>{
         List<Account> savedAccounts = new ArrayList<>();
         try {
             for (Account account : toSave) {
-                String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, ?, ?)";
+                String query = "INSERT INTO account (account.name, user_id, currency_id, type) VALUES (?, ?, ?, ?)";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
-                preparedStatement.setString(1, account.getAccount_name());
+                preparedStatement.setString(1, account.getName());
                 preparedStatement.setObject(2, UUID.fromString(account.getUser_id()));
-                preparedStatement.setInt(3, account.getDevise_id());
+                preparedStatement.setInt(3, account.getCurrency_id());
+                preparedStatement.setString(4, account.getType());
 
                 preparedStatement.executeUpdate();
                 savedAccounts.add(account);
@@ -68,11 +69,12 @@ public class AccountOperation implements CrudOperation<Account>{
     @Override
     public Account save(Account toAdd) {
         try {
-            String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, CAST(? AS UUID), ?)";
+            String query = "INSERT INTO account (name, user_id, devise_id, type) VALUES (?, CAST(? AS UUID), ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, toAdd.getAccount_name());
+            preparedStatement.setString(1, toAdd.getName());
             preparedStatement.setString(2, toAdd.getUser_id());
-            preparedStatement.setInt(3, toAdd.getDevise_id());
+            preparedStatement.setInt(3, toAdd.getCurrency_id());
+            preparedStatement.setString(4, toAdd.getType());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,9 +85,9 @@ public class AccountOperation implements CrudOperation<Account>{
     @Override
     public Account update(Account toUpdate) {
         try {
-            String updateQuery = "UPDATE account SET account_name=? WHERE id=?";
+            String updateQuery = "UPDATE account SET name=? WHERE id=?";
             PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
-            updateStatement.setString(1, toUpdate.getAccount_name());
+            updateStatement.setString(1, toUpdate.getName());
             updateStatement.setInt(2, toUpdate.getAccount_id());
             updateStatement.executeUpdate();
 
@@ -98,9 +100,9 @@ public class AccountOperation implements CrudOperation<Account>{
             if (resultSet.next()) {
                 Account updatedAccount = new Account();
                 updatedAccount.setAccount_id(resultSet.getInt("id"));
-                updatedAccount.setAccount_name(resultSet.getString("account_name"));
+                updatedAccount.setName(resultSet.getString("name"));
                 updatedAccount.setUser_id(String.valueOf(UUID.fromString(resultSet.getString("user_id"))));
-                updatedAccount.setDevise_id(resultSet.getInt("devise_id"));
+                updatedAccount.setCurrency_id(resultSet.getInt("currency_id"));
 
                 System.out.println("Account updated");
                 return updatedAccount;
@@ -125,7 +127,7 @@ public class AccountOperation implements CrudOperation<Account>{
 
     public Account getOne(int id) throws PropertyNotFoundException {
         try {
-            String query = "SELECT account.id as id, account_name, devise_id, \"user\".id as user_id, username, email FROM account inner join \"user\" on account.user_id = \"user\".id WHERE account.id = ?";
+            String query = "SELECT account.id as id, name, currency_id, \"user\".id as user_id, username, email FROM account inner join \"user\" on account.user_id = \"user\".id WHERE account.id = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setObject(1, id);
 
@@ -134,9 +136,9 @@ public class AccountOperation implements CrudOperation<Account>{
             if (resultSet.next()) {
                 Account account = new Account();
                 account.setAccount_id(resultSet.getInt("id"));
-                account.setAccount_name(resultSet.getString("account_name"));
+                account.setName(resultSet.getString("name"));
                 account.setUser_id(String.valueOf(UUID.fromString(resultSet.getString("user_id"))));
-                account.setDevise_id(resultSet.getInt("devise_id"));
+                account.setCurrency_id(resultSet.getInt("currency_id"));
                 account.setEmail(resultSet.getString("email"));
                 account.setUsername(resultSet.getString("username"));
                 account.setUser_id(resultSet.getString("user_id"));

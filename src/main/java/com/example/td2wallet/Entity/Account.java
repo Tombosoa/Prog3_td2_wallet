@@ -1,19 +1,34 @@
 package com.example.td2wallet.Entity;
 
-
-
-public class Account extends User{
+public class Account extends User {
     private int account_id;
-    private String account_name;
+    private String name;
+    private String type;
 
     private String user_id;
-    private int devise_id;
+    private int currency_id;
 
-    public Account(String id, String username, String email, String account_name, int account_id, int devise_id) {
+    public String getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Account(String id, String username, String email, String name, int account_id, int currency_id) {
         super(id, username, email);
         this.account_id = account_id;
-        this.account_name = account_name;
-        this.devise_id = devise_id;
+        this.name = name;
+        this.currency_id = currency_id;
     }
 
     public int getAccount_id() {
@@ -24,13 +39,6 @@ public class Account extends User{
         this.account_id = account_id;
     }
 
-    public String getAccount_name() {
-        return account_name;
-    }
-
-    public void setAccount_name(String account_name) {
-        this.account_name = account_name;
-    }
 
     public String getUser_id() {
         return user_id;
@@ -40,40 +48,41 @@ public class Account extends User{
         this.user_id = user_id;
     }
 
-    public int getDevise_id() {
-        return devise_id;
+    public int getCurrency_id() {
+        return currency_id;
     }
 
-    public void setDevise_id(int devise_id) {
-        this.devise_id = devise_id;
+    public void setCurrency_id(int currency_id) {
+        this.currency_id = currency_id;
     }
 
-    public Account(int account_id, String account_name, String user_id, int devise_id) {
+    public Account(int account_id, String name, String user_id, int currency_id) {
         super();
         this.account_id = account_id;
-        this.account_name = account_name;
+        this.name = name;
         this.user_id = user_id;
-        this.devise_id = devise_id;
+        this.currency_id = currency_id;
     }
 
-    public Account(String account_name, String user_id, int devise_id) {
-        this.account_name = account_name;
+    public Account(String name, String user_id, int currency_id) {
+        this.name = name;
         this.user_id = user_id;
-        this.devise_id = devise_id;
+        this.currency_id = currency_id;
     }
 
-    public Account(String username, String email, String account_name) {
+    public Account(String username, String email, String name) {
         super(username, email);
-        this.account_name = account_name;
+        this.name = name;
     }
+
     public Account() {
     }
 
-    public Account(int account_id, String account_name, String username, String email, int devise_id, String user_id) {
+    public Account(int account_id, String name, String username, String email, int currency_id, String user_id) {
         super(username, email);
         this.account_id = account_id;
-        this.account_name = account_name;
-        this.devise_id = devise_id;
+        this.name = name;
+        this.currency_id = currency_id;
         this.user_id = user_id;
     }
 
@@ -81,9 +90,9 @@ public class Account extends User{
     public String toString() {
         return "Account{" +
                 "account_id=" + account_id +
-                ", account_name='" + account_name + '\'' +
+                ", name='" + name + '\'' +
                 ", user_id='" + user_id + '\'' +
-                ", devise_id=" + devise_id +
+                ", currency_id=" + currency_id +
                 '}';
     }
 }

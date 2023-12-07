@@ -17,7 +17,7 @@ public class DeviseController {
         this.deviseOperation = deviseOperation;
     }
 
-    @GetMapping("/devises")
+    @GetMapping("/currencies")
     public List<Devise> getDevises(){
         return deviseOperation.findAll();
     }
@@ -27,22 +27,22 @@ public class DeviseController {
         return deviseOperation.saveAll(devises);
     }
 
-    @PostMapping("/devise")
+    @PostMapping("/currency")
     public Devise newDevise(@RequestBody Devise devise){
         return deviseOperation.save(devise);
     }
 
-    @PutMapping("/devise")
+    @PutMapping("/currency")
     public Devise updateDevise(@RequestBody Devise devise){
         return deviseOperation.update(devise);
     }
 
-    @DeleteMapping("/devise/{uid}")
+    @DeleteMapping("/currency/{uid}")
     public void deleteDevise(@PathVariable("uid") int id){
         deviseOperation.deleteDevise(id);
     }
 
-    @GetMapping("/devise/{id}")
+    @GetMapping("/currency/{id}")
     public Devise getOneDevise(@PathVariable("id") int id){
         return deviseOperation.getOne(id);
     }
