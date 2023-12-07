@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 @Component
 
-@Component
 public class DeviseOperation implements CrudOperation<Devise> {
 
     String userName = System.getenv("DB_USERNAME");
@@ -48,7 +47,7 @@ public class DeviseOperation implements CrudOperation<Devise> {
         List<Devise> savedDevises = new ArrayList<>();
         try {
             for (Devise devise : toSave) {
-                String query = "INSERT INTO currency (name,code) VALUES ( ?, ?)";
+                String query = "INSERT INTO currency (name, code) VALUES (?,?) ON CONFLICT (ID) DO UPDATE SET name = EXCLUDED.name, code = EXCLUDED.code";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setString(1, devise.getName());
                 preparedStatement.setString(2, devise.getCode());
@@ -66,7 +65,7 @@ public class DeviseOperation implements CrudOperation<Devise> {
     @Override
     public Devise save(Devise toAdd) {
         try {
-            String query = "INSERT INTO currency (name, code) VALUES ( ?, ?)";
+            String query = "INSERT INTO currency (name, code) VALUES (?,?) ON CONFLICT (ID) DO UPDATE SET name = EXCLUDED.name, code = EXCLUDED.code";;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, toAdd.getName());
             preparedStatement.setString(2, toAdd.getCode());
@@ -76,7 +75,15 @@ public class DeviseOperation implements CrudOperation<Devise> {
         }
         return toAdd;
     }
-
+    public static void main(String[] args) {
+        DeviseOperation deviseOperation = new DeviseOperation();
+        Devise devise = new Devise("Ariary","MGA");
+        Devise devise1 = new Devise("Euro","EUR");
+        List<Devise> deviseList=new ArrayList<>();
+        deviseList.add(devise);
+        deviseList.add(devise1);
+        deviseOperation.saveAll(deviseList);
+    }
     @Override
     public Devise update(Devise toUpdate) {
         try {

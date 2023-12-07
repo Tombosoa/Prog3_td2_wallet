@@ -48,7 +48,7 @@ public class TransactionOperation implements CrudOperation<Transaction> {
         List<Transaction> savedTransactions = new ArrayList<>();
         try {
             for (Transaction transaction : toSave) {
-                String query = "INSERT INTO transaction (transaction_date,type,amount,account_id, label) VALUES ( ?, ?,?,?, ?)";
+                String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label) VALUES ( ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label;";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setObject(1, transaction.getTransaction_date());
                 preparedStatement.setString(2, transaction.getType());
@@ -69,18 +69,30 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction save(Transaction toAdd) {
         try {
-            String query = "INSERT INTO transaction (type,amount,account_id, label) VALUES ( ?, ?,?,?)";
+            String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label) VALUES ( ?, ?, ?, ?,?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label;";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-
-            preparedStatement.setString(1, toAdd.getType());
-            preparedStatement.setDouble(2, toAdd.getAmount());
-            preparedStatement.setInt(3,toAdd.getAccount_id());
-            preparedStatement.setString(4, toAdd.getLabel());
+            preparedStatement.setObject(1,toAdd.getTransaction_date());
+            preparedStatement.setString(2, toAdd.getType());
+            preparedStatement.setDouble(3, toAdd.getAmount());
+            preparedStatement.setInt(4,toAdd.getAccount_id());
+            preparedStatement.setString(5, toAdd.getLabel());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return toAdd;
+    }
+
+    public static void main(String[] args) {
+        TransactionOperation transactionOperation = new TransactionOperation();
+        LocalDate date= LocalDate.of(2023,02,01);
+        Transaction transaction = new Transaction(date, "credit",1000.7,2,"pre bancaire");
+     Transaction transaction1=new Transaction(date, "debit",-100,2,"pre bancaire");
+     List <Transaction> transactionList= new ArrayList<>();
+     transactionList.add(transaction);
+     transactionList.add(transaction1);
+     transactionOperation.saveAll(transactionList);
+
     }
 
     @Override
