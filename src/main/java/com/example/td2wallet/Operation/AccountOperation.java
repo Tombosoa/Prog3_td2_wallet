@@ -50,7 +50,7 @@ public class AccountOperation implements CrudOperation<Account>{
         List<Account> savedAccounts = new ArrayList<>();
         try {
             for (Account account : toSave) {
-                String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, ?, ?)";
+                String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, ?, ?)ON CONFLICT (id) DO UPDATE SET account_name = EXCLUDED.account_name,user_id=EXCLUDED.user_id,devise_id=EXCLUDED.devise_id";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setString(1, account.getAccount_name());
                 preparedStatement.setObject(2, UUID.fromString(account.getUser_id()));
@@ -68,7 +68,7 @@ public class AccountOperation implements CrudOperation<Account>{
     @Override
     public Account save(Account toAdd) {
         try {
-            String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, CAST(? AS UUID), ?)";
+            String query = "INSERT INTO account (account_name, user_id, devise_id) VALUES (?, CAST(? AS UUID), ?) ON CONFLICT (id) DO UPDATE SET account_name = EXCLUDED.account_name,user_id=EXCLUDED.user_id,devise_id=EXCLUDED.devise_id";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, toAdd.getAccount_name());
             preparedStatement.setString(2, toAdd.getUser_id());
@@ -80,6 +80,17 @@ public class AccountOperation implements CrudOperation<Account>{
         return toAdd;
     }
 
+
+    public static void main(String[] args) {
+        AccountOperation accountOperation = new AccountOperation();
+        Account account = new Account("B0AH", "d4bfd8d9-bb39-427b-9977-b92d0b3e8db0",9);
+        Account account1=new Account("BMOI","d4bfd8d9-bb39-427b-9977-b92d0b3e8db0",9);
+    List<Account> accountList = new ArrayList<>();
+    accountList.add(account);
+    accountList.add(account1);
+    accountOperation.saveAll(accountList);
+
+    }
     @Override
     public Account update(Account toUpdate) {
         try {
@@ -149,5 +160,6 @@ public class AccountOperation implements CrudOperation<Account>{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
