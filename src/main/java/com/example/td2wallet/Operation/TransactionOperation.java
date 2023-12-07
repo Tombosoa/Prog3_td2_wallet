@@ -69,13 +69,13 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction save(Transaction toAdd) {
         try {
-            String query = "INSERT INTO transaction (transaction_date,type,amount,account_id, label) VALUES ( ?, ?,?,?, ?)";
+            String query = "INSERT INTO transaction (type,amount,account_id, label) VALUES ( ?, ?,?,?)";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setObject(1, toAdd.getTransaction_date());
-            preparedStatement.setString(2, toAdd.getType());
-            preparedStatement.setDouble(3, toAdd.getAmount());
-            preparedStatement.setInt(4,toAdd.getAccount_id());
-            preparedStatement.setString(5, toAdd.getLabel());
+
+            preparedStatement.setString(1, toAdd.getType());
+            preparedStatement.setDouble(2, toAdd.getAmount());
+            preparedStatement.setInt(3,toAdd.getAccount_id());
+            preparedStatement.setString(4, toAdd.getLabel());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

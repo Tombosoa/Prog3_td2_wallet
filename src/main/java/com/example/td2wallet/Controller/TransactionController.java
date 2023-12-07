@@ -27,15 +27,15 @@ public class TransactionController {
         return transactionOperation.getOne(id);
     }
 
-    @PostMapping("/transaction")
+    @PutMapping("/transaction")
     public Transaction newTransaction(@RequestBody Transaction transaction){
         return transactionOperation.save(transaction);
     }
 
-    @PutMapping("/transaction")
+   /* @PutMapping("/transaction")
     public Transaction updateTransaction(@RequestBody Transaction transaction){
         return transactionOperation.update(transaction);
-    }
+    }*/
 
     @DeleteMapping("/transaction/{uid}")
     public void deleteTransaction(@PathVariable("uid") int id){
