@@ -1,13 +1,15 @@
 package com.example.td2wallet.functionnality;
 import com.example.td2wallet.DataBaseConnection;
-import com.example.td2wallet.Entity.Account;
-import com.example.td2wallet.Entity.Transaction;
-import com.example.td2wallet.Entity.User;
+import com.example.td2wallet.Entity.*;
 import jakarta.el.PropertyNotFoundException;
 import org.springframework.stereotype.Component;
 
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +30,7 @@ public class Functionnality {
             insertStatement.setDouble(2, transaction.getAmount());
             insertStatement.setInt(3, transaction.getAccount_id());
             insertStatement.setString(4, transaction.getLabel());
-            insertStatement.executeUpdate(); // N'oubliez pas d'exécuter l'insertion
+            insertStatement.executeUpdate();
 
             Account survol = new Account();
             String selectAccount = "select * from account where id = ?";
@@ -76,6 +78,39 @@ public class Functionnality {
             } else {
                 throw new RuntimeException("Failed to retrieve updated account information.");
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static String transformSpaceToT(String originalDate) {
+        return originalDate.replace(" ", "T");
+    }
+    public AccountDate getByDate(String transaction_date, int account_id) throws PropertyNotFoundException {
+        try {
+            String query = "SELECT transaction.id AS id, transaction_date, transaction.type as type, amount, account_id, label, solde, currency.name as name FROM account INNER JOIN transaction ON transaction.account_id = account.id INNER JOIN currency ON currency.id = account.currency_id WHERE transaction_date = ? AND account.id = ?";
+            PreparedStatement preparedStatemente = conn.prepareStatement(query);
+
+                String transformedDate = transformSpaceToT(transaction_date);
+                OffsetDateTime dateTime = OffsetDateTime.parse(transformedDate);
+
+                preparedStatemente.setTimestamp(1, Timestamp.from(dateTime.toInstant()));
+                preparedStatemente.setInt(2, account_id);
+
+                ResultSet resultSett = preparedStatemente.executeQuery();
+                    if (resultSett.next()) {
+                        Timestamp timestampFromResultSet = resultSett.getTimestamp("transaction_date");
+                        OffsetDateTime transacDate = OffsetDateTime.ofInstant(timestampFromResultSet.toInstant(), ZoneId.systemDefault());
+                        String type = resultSett.getString("type");
+                        double amount = resultSett.getDouble("amount");
+                        int account_Id = resultSett.getInt("account_id");
+                        String label = resultSett.getString("label");
+                        double solde = resultSett.getDouble("solde");
+                        String name = resultSett.getString("name");
+                        AccountDate account = new AccountDate(transacDate, type, amount, account_Id, label, solde, name);
+                        return  account;
+                    } else {
+                        throw new PropertyNotFoundException("Account not found");
+                    }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
