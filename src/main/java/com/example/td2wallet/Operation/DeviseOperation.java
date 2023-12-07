@@ -28,7 +28,7 @@ public class DeviseOperation implements CrudOperation<Devise> {
             String query = "SELECT id, devise_name, devise_country from devise ";
             try (ResultSet result = statement.executeQuery(query)) {
                 while (result.next()) {
-                    int id = result.getInt("id");
+                    int id = result.getInt("id"); // cela s'appele des magic numbers
                     String devise_name = result.getString("devise_name");
                     String devise_country = result.getString("devise_country");
 
