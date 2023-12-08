@@ -150,7 +150,7 @@ public class Functionnality {
 
 
 
-    public TransferHistory makeTransfer(double montant, int idCompteDeb, int idCompteCred) {
+    public ResponseTransfer makeTransfer(double montant, int idCompteDeb, int idCompteCred) {
         try {
             Account accountDeb = getAccountById(idCompteDeb);
             Account accountCred = getAccountById(idCompteCred);
@@ -177,11 +177,9 @@ public class Functionnality {
 
             insertTransferHistory(idTransactionDeb, idTransactionCred);
 
-            TransferHistory transferHistory = new TransferHistory();
-            transferHistory.setId_transactionDeb(idTransactionDeb);
-            transferHistory.setId_transactionCred(idTransactionCred);
+            ResponseTransfer responseTransfer = new ResponseTransfer(accountDeb, accountCred );
 
-            return transferHistory;
+            return responseTransfer;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
