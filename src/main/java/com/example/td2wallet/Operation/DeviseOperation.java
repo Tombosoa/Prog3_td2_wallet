@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 @Component
-
-@Component
 public class DeviseOperation implements CrudOperation<Devise> {
 
     String userName = System.getenv("DB_USERNAME");
