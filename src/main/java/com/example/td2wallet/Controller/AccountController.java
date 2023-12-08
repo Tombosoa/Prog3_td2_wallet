@@ -22,7 +22,7 @@ public class AccountController {
         return accountOperation.findAll();
     }
 
-    @PostMapping("/saveAllAccounts")
+  /*  @PostMapping("/saveAllAccounts")
     public List<Account> saveAllAccount(@RequestBody List<Account> accounts){
         return  accountOperation.saveAll(accounts);
     }
@@ -30,11 +30,11 @@ public class AccountController {
     @PostMapping("/account")
     public Account newAccount(@RequestBody Account account){
         return accountOperation.save(account);
-    }
+    }*/
 
     @PutMapping("/account")
     public Account updateAccount(@RequestBody Account account){
-        return accountOperation.update(account);
+        return accountOperation.save(account);
     }
 
     @GetMapping("/account/{id}")

@@ -1,21 +1,14 @@
-CREATE TABLE IF NOT EXISTS devise (id SERIAL PRIMARY KEY, devise_name varchar(255), devise_country varchar(255));
-INSERT INTO devise (devise_name, devise_country)
-SELECT 'Euro', 'Europe'
+CREATE TABLE IF NOT EXISTS currency (id SERIAL PRIMARY KEY, name varchar(255) check (name='Euro'or name='Ariary'), code varchar(255) check (code='EUR' OR code='MGA'));
+INSERT INTO currency (name, code)
+SELECT 'Euro', 'EUR'
     WHERE NOT EXISTS (
-    SELECT 1 FROM devise
-    WHERE devise_name = 'Euro'
+    SELECT 1 FROM currency
+    WHERE name = 'Euro'
 );
 
-INSERT INTO devise (devise_name, devise_country)
-SELECT 'Yuan', 'CHINE'
+INSERT INTO currency (name, code)
+SELECT 'Ariary', 'MGA'
     WHERE NOT EXISTS (
-    SELECT 1 FROM devise
-    WHERE devise_name = 'Yuan'
-);
-
-INSERT INTO devise (devise_name, devise_country)
-SELECT 'Yen', 'Japon'
-    WHERE NOT EXISTS (
-    SELECT 1 FROM devise
-    WHERE devise_name = 'Yen'
+    SELECT 1 FROM currency
+    WHERE name = 'Ariary'
 );
