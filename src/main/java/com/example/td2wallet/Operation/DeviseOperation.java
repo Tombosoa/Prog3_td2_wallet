@@ -75,15 +75,6 @@ public class DeviseOperation implements CrudOperation<Devise> {
         }
         return toAdd;
     }
-    public static void main(String[] args) {
-        DeviseOperation deviseOperation = new DeviseOperation();
-        Devise devise = new Devise("Ariary","MGA");
-        Devise devise1 = new Devise("Euro","EUR");
-        List<Devise> deviseList=new ArrayList<>();
-        deviseList.add(devise);
-        deviseList.add(devise1);
-        deviseOperation.saveAll(deviseList);
-    }
     @Override
     public Devise update(Devise toUpdate) {
         try {

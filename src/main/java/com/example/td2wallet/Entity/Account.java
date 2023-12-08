@@ -6,6 +6,8 @@ public class Account extends User {
     private String type;
     private double solde;
 
+
+
     public double getSolde() {
         return solde;
     }
@@ -39,6 +41,14 @@ public class Account extends User {
         this.name = name;
         this.currency_id = currency_id;
     }
+    public Account( String name,String user_id, int currency_id,String type,double solde) {
+
+        this.name = name;
+        this.user_id= user_id;
+        this.currency_id = currency_id;
+        this.type = type;
+        this.solde=solde;
+    }
 
     public int getAccount_id() {
         return account_id;
@@ -64,6 +74,7 @@ public class Account extends User {
     public void setCurrency_id(int currency_id) {
         this.currency_id = currency_id;
     }
+
 
     public Account(int account_id, String name, String user_id, int currency_id) {
         super();
