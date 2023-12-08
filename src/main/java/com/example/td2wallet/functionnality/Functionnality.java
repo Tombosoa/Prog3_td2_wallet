@@ -120,6 +120,36 @@ public class Functionnality {
     }
 
 
+
+    public AccountDate getTodayBalance(int account_id) throws PropertyNotFoundException {
+        try {
+            String query = "SELECT transaction.id AS id, transaction_date, transaction.type as type, amount, account_id, label, solde, currency.name as name FROM account INNER JOIN transaction ON transaction.account_id = account.id INNER JOIN currency ON currency.id = account.currency_id WHERE transaction_date::date = CURRENT_DATE AND account.id =? order by transaction_date desc limit 1";
+            PreparedStatement preparedStatemente = conn.prepareStatement(query);
+
+            preparedStatemente.setInt(1, account_id);
+
+            ResultSet resultSett = preparedStatemente.executeQuery();
+            if (resultSett.next()) {
+                Timestamp timestampFromResultSet = resultSett.getTimestamp("transaction_date");
+                OffsetDateTime transacDate = OffsetDateTime.ofInstant(timestampFromResultSet.toInstant(), ZoneId.systemDefault());
+                String type = resultSett.getString("type");
+                double amount = resultSett.getDouble("amount");
+                int account_Id = resultSett.getInt("account_id");
+                String label = resultSett.getString("label");
+                double solde = resultSett.getDouble("solde");
+                String name = resultSett.getString("name");
+                AccountDate account = new AccountDate(transacDate, type, amount, account_Id, label, solde, name);
+                return account;
+            } else {
+                throw new PropertyNotFoundException("Account not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     public TransferHistory makeTransfer(double montant, int idCompteDeb, int idCompteCred) {
         try {
             Account accountDeb = getAccountById(idCompteDeb);
