@@ -22,7 +22,7 @@ public class DeviseController {
         return deviseOperation.findAll();
     }
 
-    @PostMapping("/saveAllDevises")
+   /* @PostMapping("/saveAllDevises")
     public List<Devise> saveAllDevises(@RequestBody List<Devise> devises){
         return deviseOperation.saveAll(devises);
     }
@@ -30,11 +30,11 @@ public class DeviseController {
     @PostMapping("/currency")
     public Devise newDevise(@RequestBody Devise devise){
         return deviseOperation.save(devise);
-    }
+    }*/
 
     @PutMapping("/currency")
     public Devise updateDevise(@RequestBody Devise devise){
-        return deviseOperation.update(devise);
+        return deviseOperation.save(devise);
     }
 
     @DeleteMapping("/currency/{uid}")
