@@ -27,10 +27,7 @@ public class TransactionController {
         return transactionOperation.getOne(id);
     }
 
-    @PutMapping("/transaction")
-    public Transaction newTransaction(@RequestBody Transaction transaction){
-        return transactionOperation.save(transaction);
-    }
+
 
     @PutMapping("/transaction")
     public Transaction updateTransaction(@RequestBody Transaction transaction){
