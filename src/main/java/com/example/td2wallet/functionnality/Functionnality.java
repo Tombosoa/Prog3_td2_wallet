@@ -120,10 +120,60 @@ public class Functionnality {
     }
 
 
+
+    public AccountDate getTodayBalance(int account_id) throws PropertyNotFoundException {
+        try {
+            String query = "SELECT transaction.id AS id, transaction_date, transaction.type as type, amount, account_id, label, solde, currency.name as name FROM account INNER JOIN transaction ON transaction.account_id = account.id INNER JOIN currency ON currency.id = account.currency_id WHERE transaction_date::date = CURRENT_DATE AND account.id =? order by transaction_date desc limit 1";
+            PreparedStatement preparedStatemente = conn.prepareStatement(query);
+
+            preparedStatemente.setInt(1, account_id);
+
+            ResultSet resultSett = preparedStatemente.executeQuery();
+            if (resultSett.next()) {
+                Timestamp timestampFromResultSet = resultSett.getTimestamp("transaction_date");
+                OffsetDateTime transacDate = OffsetDateTime.ofInstant(timestampFromResultSet.toInstant(), ZoneId.systemDefault());
+                String type = resultSett.getString("type");
+                double amount = resultSett.getDouble("amount");
+                int account_Id = resultSett.getInt("account_id");
+                String label = resultSett.getString("label");
+                double solde = resultSett.getDouble("solde");
+                String name = resultSett.getString("name");
+                AccountDate account = new AccountDate(transacDate, type, amount, account_Id, label, solde, name);
+                return account;
+            } else {
+                throw new PropertyNotFoundException("Account not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     public TransferHistory makeTransfer(double montant, int idCompteDeb, int idCompteCred) {
         try {
-            int idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
-            int idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
+            Account accountDeb = getAccountById(idCompteDeb);
+            Account accountCred = getAccountById(idCompteCred);
+            int idTransactionDeb;
+            int idTransactionCred;
+            if (accountDeb.getCurrency_id() == accountCred.getCurrency_id()) {
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
+            } else if (accountDeb.getCurrency_id() == 1 && accountCred.getCurrency_id() == 2) {
+                double currencyToday = getCurrencyValueForToday();
+                double montantConverti = montant / currencyToday;
+
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+            }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
+                double currencyToday = getCurrencyValueForToday();
+                double montantConverti = montant * currencyToday;
+
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+            } else {
+                throw new RuntimeException("error");
+            }
 
             insertTransferHistory(idTransactionDeb, idTransactionCred);
 
@@ -136,6 +186,7 @@ public class Functionnality {
             throw new RuntimeException(e);
         }
     }
+
 
     public int makeTransactionAct(double amount, String action, int account_id) {
         int idTransaction = 0;
@@ -204,6 +255,19 @@ public class Functionnality {
                 }
             }
         }
+    }
+
+    private double getCurrencyValueForToday() throws SQLException {
+        double amount = 0;
+        String sql = "SELECT amount FROM currencyvalue WHERE release_date = current_date";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    amount = resultSet.getDouble("amount");
+                }
+            }
+        }
+        return amount;
     }
 
 }
