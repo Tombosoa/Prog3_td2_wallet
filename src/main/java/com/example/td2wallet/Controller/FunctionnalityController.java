@@ -37,6 +37,11 @@ public class FunctionnalityController {
         return functionnality.makeTransfer(amount, id_account_deb, id_account_cred);
     }
 
-
+    @GetMapping("/gettodaybalance")
+    public AccountDate getTodayBalance(
+            @RequestParam int account_id
+    ) {
+        return functionnality.getTodayBalance(account_id);
+    }
 
 }
