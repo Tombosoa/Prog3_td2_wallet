@@ -34,9 +34,7 @@ public class AccountDate {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     public void setId(int id) {
         this.id = id;
@@ -63,7 +61,13 @@ public class AccountDate {
     public int getAccount_id(int accountId) {
         return account_id;
     }
+    public double getAmount() {
+        return amount;
+    }
 
+    public int getAccount_id() {
+        return account_id;
+    }
     public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }
@@ -78,6 +82,10 @@ public class AccountDate {
 
     public double getSolde(double solde) {
         return this.solde;
+    }
+
+    public double getSolde() {
+        return solde;
     }
 
     public void setSolde(double solde) {
