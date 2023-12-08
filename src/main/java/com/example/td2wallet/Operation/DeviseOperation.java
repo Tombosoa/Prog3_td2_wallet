@@ -46,7 +46,7 @@ public class DeviseOperation implements CrudOperation<Devise> {
         List<Devise> savedDevises = new ArrayList<>();
         try {
             for (Devise devise : toSave) {
-                String query = "INSERT INTO currency (name,code) VALUES ( ?, ?)";
+                String query = "INSERT INTO currency (name, code) VALUES (?,?) ON CONFLICT (ID) DO UPDATE SET name = EXCLUDED.name, code = EXCLUDED.code";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setString(1, devise.getName());
                 preparedStatement.setString(2, devise.getCode());
@@ -64,7 +64,7 @@ public class DeviseOperation implements CrudOperation<Devise> {
     @Override
     public Devise save(Devise toAdd) {
         try {
-            String query = "INSERT INTO currency (name, code) VALUES ( ?, ?)";
+            String query = "INSERT INTO currency (name, code) VALUES (?,?) ON CONFLICT (ID) DO UPDATE SET name = EXCLUDED.name, code = EXCLUDED.code";;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, toAdd.getName());
             preparedStatement.setString(2, toAdd.getCode());
@@ -74,7 +74,6 @@ public class DeviseOperation implements CrudOperation<Devise> {
         }
         return toAdd;
     }
-
     @Override
     public Devise update(Devise toUpdate) {
         try {

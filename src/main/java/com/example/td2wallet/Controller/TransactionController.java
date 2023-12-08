@@ -32,10 +32,10 @@ public class TransactionController {
         return transactionOperation.save(transaction);
     }
 
-   /* @PutMapping("/transaction")
+    @PutMapping("/transaction")
     public Transaction updateTransaction(@RequestBody Transaction transaction){
         return transactionOperation.update(transaction);
-    }*/
+    }
 
     @DeleteMapping("/transaction/{uid}")
     public void deleteTransaction(@PathVariable("uid") int id){

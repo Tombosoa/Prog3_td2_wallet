@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Timestamp;
 @Component
 public class TransactionOperation implements CrudOperation<Transaction> {
     String userName = System.getenv("DB_USERNAME");
@@ -43,12 +44,36 @@ public class TransactionOperation implements CrudOperation<Transaction> {
         return deviseList;
     }
 
+
+    public String getSoldHistorique(LocalDateTime startDate, LocalDateTime endDate) {
+        try {
+            String query = "SELECT t.tra-nsaction_date, a.solde FROM transaction t JOIN account a ON t.account_id = a.id WHERE  t.transaction_date BETWEEN ? AND ? ORDER BY t.transaction_date";
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setTimestamp(1, Timestamp.valueOf(startDate));
+                preparedStatement.setTimestamp(2, Timestamp.valueOf(endDate));
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        LocalDateTime transactionDateTime = resultSet.getTimestamp("transaction_date").toLocalDateTime();
+                        double solde = resultSet.getDouble("solde");
+                        System.out.println("Date and Time: " + transactionDateTime + ", Solde: " + solde);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
+    }
+
+
     @Override
     public List<Transaction> saveAll(List<Transaction> toSave) {
         List<Transaction> savedTransactions = new ArrayList<>();
         try {
             for (Transaction transaction : toSave) {
-                String query = "INSERT INTO transaction (transaction_date,type,amount,account_id, label) VALUES ( ?, ?,?,?, ?)";
+                String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label) VALUES ( ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label;";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setObject(1, transaction.getTransaction_date());
                 preparedStatement.setString(2, transaction.getType());
@@ -69,13 +94,13 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction save(Transaction toAdd) {
         try {
-            String query = "INSERT INTO transaction (type,amount,account_id, label) VALUES ( ?, ?,?,?)";
+            String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label) VALUES ( ?, ?, ?, ?,?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label;";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-
-            preparedStatement.setString(1, toAdd.getType());
-            preparedStatement.setDouble(2, toAdd.getAmount());
-            preparedStatement.setInt(3,toAdd.getAccount_id());
-            preparedStatement.setString(4, toAdd.getLabel());
+            preparedStatement.setObject(1,toAdd.getTransaction_date());
+            preparedStatement.setString(2, toAdd.getType());
+            preparedStatement.setDouble(3, toAdd.getAmount());
+            preparedStatement.setInt(4,toAdd.getAccount_id());
+            preparedStatement.setString(5, toAdd.getLabel());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -50,12 +50,13 @@ public class AccountOperation implements CrudOperation<Account>{
         List<Account> savedAccounts = new ArrayList<>();
         try {
             for (Account account : toSave) {
-                String query = "INSERT INTO account (account.name, user_id, currency_id, type) VALUES (?, ?, ?, ?)";
+                String query = "INSERT INTO account (account_name, user_id, currency_id,type,solde) VALUES (?, CAST(? AS UUID), ?,?,?) ON CONFLICT (id) DO UPDATE SET account_name = EXCLUDED.account_name,user_id=EXCLUDED.user_id,currency_id=EXCLUDED.currency_id,type=EXCLUDED.type,solde=EXCLUDED.solde";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setString(1, account.getName());
                 preparedStatement.setObject(2, UUID.fromString(account.getUser_id()));
                 preparedStatement.setInt(3, account.getCurrency_id());
                 preparedStatement.setString(4, account.getType());
+                preparedStatement.setDouble(5,account.getSolde());
 
                 preparedStatement.executeUpdate();
                 savedAccounts.add(account);
@@ -69,18 +70,20 @@ public class AccountOperation implements CrudOperation<Account>{
     @Override
     public Account save(Account toAdd) {
         try {
-            String query = "INSERT INTO account (name, user_id, devise_id, type) VALUES (?, CAST(? AS UUID), ?, ?)";
+            String query = "INSERT INTO account (account_name, user_id, currency_id,type,solde) VALUES (?, CAST(? AS UUID), ?,?,?) ON CONFLICT (id) DO UPDATE SET account_name = EXCLUDED.account_name,user_id=EXCLUDED.user_id,currency_id=EXCLUDED.currency_id,type=EXCLUDED.type,solde=EXCLUDED.solde";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, toAdd.getName());
             preparedStatement.setString(2, toAdd.getUser_id());
             preparedStatement.setInt(3, toAdd.getCurrency_id());
             preparedStatement.setString(4, toAdd.getType());
+            preparedStatement.setDouble(5,toAdd.getSolde());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return toAdd;
     }
+
 
     @Override
     public Account update(Account toUpdate) {
@@ -151,5 +154,6 @@ public class AccountOperation implements CrudOperation<Account>{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
