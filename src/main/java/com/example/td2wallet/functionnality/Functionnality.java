@@ -130,12 +130,14 @@ public class Functionnality {
                 idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
                 idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
             } else if (accountDeb.getCurrency_id() == 1 && accountCred.getCurrency_id() == 2) {
-                double montantConverti = montant / 4600;
+                double currencyToday = getCurrencyValueForToday();
+                double montantConverti = montant / currencyToday;
 
                 idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
                 idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
             }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
-                double montantConverti = montant * 4600;
+                double currencyToday = getCurrencyValueForToday();
+                double montantConverti = montant * currencyToday;
 
                 idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
                 idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
@@ -223,6 +225,19 @@ public class Functionnality {
                 }
             }
         }
+    }
+
+    private double getCurrencyValueForToday() throws SQLException {
+        double amount = 0;
+        String sql = "SELECT amount FROM currencyvalue WHERE release_date = current_date";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    amount = resultSet.getDouble("amount");
+                }
+            }
+        }
+        return amount;
     }
 
 }
