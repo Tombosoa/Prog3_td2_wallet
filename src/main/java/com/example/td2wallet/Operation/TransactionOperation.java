@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Timestamp;
 @Component
 public class TransactionOperation implements CrudOperation<Transaction> {
     String userName = System.getenv("DB_USERNAME");
@@ -42,6 +43,30 @@ public class TransactionOperation implements CrudOperation<Transaction> {
         }
         return deviseList;
     }
+
+
+    public String getSoldHistorique(LocalDateTime startDate, LocalDateTime endDate) {
+        try {
+            String query = "SELECT t.tra-nsaction_date, a.solde FROM transaction t JOIN account a ON t.account_id = a.id WHERE  t.transaction_date BETWEEN ? AND ? ORDER BY t.transaction_date";
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setTimestamp(1, Timestamp.valueOf(startDate));
+                preparedStatement.setTimestamp(2, Timestamp.valueOf(endDate));
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        LocalDateTime transactionDateTime = resultSet.getTimestamp("transaction_date").toLocalDateTime();
+                        double solde = resultSet.getDouble("solde");
+                        System.out.println("Date and Time: " + transactionDateTime + ", Solde: " + solde);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
+    }
+
 
     @Override
     public List<Transaction> saveAll(List<Transaction> toSave) {
@@ -81,18 +106,6 @@ public class TransactionOperation implements CrudOperation<Transaction> {
             throw new RuntimeException(e);
         }
         return toAdd;
-    }
-
-    public static void main(String[] args) {
-        TransactionOperation transactionOperation = new TransactionOperation();
-        LocalDate date= LocalDate.of(2023,02,01);
-        Transaction transaction = new Transaction(date, "credit",1000.7,2,"pre bancaire");
-     Transaction transaction1=new Transaction(date, "debit",-100,2,"pre bancaire");
-     List <Transaction> transactionList= new ArrayList<>();
-     transactionList.add(transaction);
-     transactionList.add(transaction1);
-     transactionOperation.saveAll(transactionList);
-
     }
 
     @Override
