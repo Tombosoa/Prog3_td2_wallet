@@ -1,0 +1,1 @@
+create table transferhistory (id serial primary key , id_transactionDeb int references transaction(id), id_transactionCred int references transaction(id));

@@ -3,6 +3,7 @@ package com.example.td2wallet.Controller;
 import com.example.td2wallet.Entity.Account;
 import com.example.td2wallet.Entity.AccountDate;
 import com.example.td2wallet.Entity.Transaction;
+import com.example.td2wallet.Entity.TransferHistory;
 import com.example.td2wallet.functionnality.Functionnality;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,14 @@ public class FunctionnalityController {
         return functionnality.getByDate(transaction_date, account_id);
     }
 
+@PostMapping("/transfer")
+    public TransferHistory makeTransfer(
+            @RequestParam double amount,
+            @RequestParam int id_account_deb,
+            @RequestParam int id_account_cred
+    ){
+        return functionnality.makeTransfer(amount, id_account_deb, id_account_cred);
+    }
 
 
 
