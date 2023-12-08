@@ -122,8 +122,26 @@ public class Functionnality {
 
     public TransferHistory makeTransfer(double montant, int idCompteDeb, int idCompteCred) {
         try {
-            int idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
-            int idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
+            Account accountDeb = getAccountById(idCompteDeb);
+            Account accountCred = getAccountById(idCompteCred);
+            int idTransactionDeb;
+            int idTransactionCred;
+            if (accountDeb.getCurrency_id() == accountCred.getCurrency_id()) {
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
+            } else if (accountDeb.getCurrency_id() == 1 && accountCred.getCurrency_id() == 2) {
+                double montantConverti = montant / 4600;
+
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+            }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
+                double montantConverti = montant * 4600;
+
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+            } else {
+                throw new RuntimeException("error");
+            }
 
             insertTransferHistory(idTransactionDeb, idTransactionCred);
 
@@ -136,6 +154,7 @@ public class Functionnality {
             throw new RuntimeException(e);
         }
     }
+
 
     public int makeTransactionAct(double amount, String action, int account_id) {
         int idTransaction = 0;
