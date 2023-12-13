@@ -4,6 +4,8 @@ import com.example.td2wallet.Entity.*;
 import com.example.td2wallet.functionnality.Functionnality;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @RestController
 @RequestMapping
 public class FunctionnalityController {
@@ -39,6 +41,11 @@ public class FunctionnalityController {
             @RequestParam int account_id
     ) {
         return functionnality.getTodayBalance(account_id);
+    }
+
+    @GetMapping("/getcurrencyactual")
+    public double getCurrencyActual() throws SQLException {
+        return functionnality.getCurrencyActual();
     }
 
 }

@@ -123,7 +123,7 @@ public class Functionnality {
 
     public AccountDate getTodayBalance(int account_id) throws PropertyNotFoundException {
         try {
-            String query = "SELECT transaction.id AS id, transaction_date, transaction.type as type, amount, account_id, label, solde, currency.name as name FROM account INNER JOIN transaction ON transaction.account_id = account.id INNER JOIN currency ON currency.id = account.currency_id WHERE transaction_date::date = CURRENT_DATE AND account.id =? order by transaction_date desc limit 1";
+            String query = "SELECT transaction.id AS id, transaction_date, transaction.type as type, amount, account_id, label, solde, currency.name as name FROM account INNER JOIN transaction ON transaction.account_id = account.id INNER JOIN currency ON currency.id = account.currency_id WHERE account.id =? order by transaction_date desc limit 1";
             PreparedStatement preparedStatemente = conn.prepareStatement(query);
 
             preparedStatemente.setInt(1, account_id);
@@ -160,13 +160,13 @@ public class Functionnality {
                 idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
                 idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
             } else if (accountDeb.getCurrency_id() == 1 && accountCred.getCurrency_id() == 2) {
-                double currencyToday = getCurrencyValueForToday();
+                double currencyToday = getCurrencyActual();
                 double montantConverti = montant / currencyToday;
 
                 idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
                 idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
             }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
-                double currencyToday = getCurrencyValueForToday();
+                double currencyToday = getCurrencyActual();
                 double montantConverti = montant * currencyToday;
 
                 idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
@@ -262,6 +262,19 @@ public class Functionnality {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     amount = resultSet.getDouble("amount");
+                }
+            }
+        }
+        return amount;
+    }
+
+    public double getCurrencyActual() throws  SQLException{
+        double amount = 0;
+        String sql = "select sum(amount)/count(amount) as current_value from currencyvalue where release_date::timestamp::date = current_date";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                if (resultSet.next()){
+                    amount = resultSet.getDouble("current_value");
                 }
             }
         }
