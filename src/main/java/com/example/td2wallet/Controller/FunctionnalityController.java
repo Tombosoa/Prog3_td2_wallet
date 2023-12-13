@@ -48,4 +48,8 @@ public class FunctionnalityController {
         return functionnality.getCurrencyActual();
     }
 
+    @GetMapping("/allcurrency")
+    public double getAllCurrency(@RequestParam String action) throws SQLException {
+        return functionnality.getAllCurrency(action);
+    }
 }

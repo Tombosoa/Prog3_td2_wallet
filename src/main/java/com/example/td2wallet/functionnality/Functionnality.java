@@ -281,4 +281,39 @@ public class Functionnality {
         return amount;
     }
 
+    public double getCurrencyActualMax() throws  SQLException{
+        double amount = 0;
+        String sql = "select amount from currencyvalue where release_date::timestamp::date = current_date order by amount desc limit 1";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                if (resultSet.next()){
+                    amount = resultSet.getDouble("amount");
+                }
+            }
+        }
+        return amount;
+    }
+
+    public double getCurrencyActualMin() throws  SQLException{
+        double amount = 0;
+        String sql = "select amount from currencyvalue where release_date::timestamp::date = current_date order by amount asc limit 1";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                if (resultSet.next()){
+                    amount = resultSet.getDouble("amount");
+                }
+            }
+        }
+        return amount;
+    }
+
+    public double getAllCurrency(String action) throws SQLException {
+        return switch (action) {
+            case "max" -> getCurrencyActualMax();
+            case "pond" -> getCurrencyActual();
+            case "min" -> getCurrencyActualMin();
+            default -> 0;
+        };
+    }
+
 }
