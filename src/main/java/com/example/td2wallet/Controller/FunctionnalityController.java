@@ -52,4 +52,13 @@ public class FunctionnalityController {
     public double getAllCurrency(@RequestParam String action) throws SQLException {
         return functionnality.getAllCurrency(action);
     }
+
+    @GetMapping("/gettotaltransac")
+    public AccountHistory getTotalTransac(
+            @RequestParam int account_id,
+            @RequestParam String first_date,
+            @RequestParam String last_date
+    ){
+        return functionnality.getTotalTransac(account_id, first_date, last_date);
+    }
 }
