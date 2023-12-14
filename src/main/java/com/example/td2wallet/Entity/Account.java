@@ -35,6 +35,10 @@ public class Account extends User {
         this.type = type;
     }
 
+
+
+
+
     public Account(String id, String username, String email, String name, int account_id, int currency_id) {
         super(id, username, email);
         this.account_id = account_id;
