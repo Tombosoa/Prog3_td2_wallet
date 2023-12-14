@@ -316,4 +316,44 @@ public class Functionnality {
         };
     }
 
+    public AccountHistory getTotalTransac(int account_id, String first_date, String last_date){
+        try {
+            String query = " SELECT \n" +
+                    "    SUM(CASE WHEN type = 'Credit' THEN amount ELSE 0 END) AS credit,\n" +
+                    "    SUM(CASE WHEN type = 'Debit' THEN amount ELSE 0 END) AS debit,\n" +
+                    "    account_id\n" +
+                    "FROM \n" +
+                    "    transaction\n" +
+                    "WHERE \n" +
+                    "    account_id = ?\n" +
+                    "    AND transaction_date BETWEEN ? AND ?\n" +
+                    "GROUP BY \n" +
+                    "    account_id;\n";
+            PreparedStatement preparedStatemente = conn.prepareStatement(query);
+
+            String firstdate = transformSpaceToT(first_date);
+            String lastdate = transformSpaceToT(last_date);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            preparedStatemente.setInt(1, account_id);
+            preparedStatemente.setTimestamp(2, Timestamp.from(firstdateTime.toInstant()));
+            preparedStatemente.setTimestamp(3, Timestamp.from(lastdateTime.toInstant()));
+
+
+            ResultSet resultSett = preparedStatemente.executeQuery();
+            if (resultSett.next()) {
+                int account_Id = resultSett.getInt("account_id");
+                double debit = resultSett.getDouble("debit");
+                double credit = resultSett.getDouble("credit");
+
+                AccountHistory account = new AccountHistory(account_Id, credit,debit);
+                return account;
+            } else {
+                throw new PropertyNotFoundException("History not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
