@@ -11,6 +11,7 @@ public class Transaction {
     private int account_id;
 
     private String label;
+    private int category_id;
 
     public String getType() {
         return type;
@@ -40,8 +41,27 @@ public class Transaction {
 
     }
 
+
+    public int getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
+    }
+
+    public Transaction(int id, LocalDate transaction_date, String type, double amount, int account_id, String label, int category_id) {
+        this.id = id;
+        this.transaction_date = transaction_date;
+        this.type = type;
+        this.amount = amount;
+        this.account_id = account_id;
+        this.label = label;
+        this.category_id = category_id;
+    }
+
     public Transaction(int id) {
-        this.id=id;
+        this.id = id;
     }
 
 
@@ -54,12 +74,11 @@ public class Transaction {
     }
 
 
-
     public LocalDate getTransaction_date() {
         return transaction_date;
     }
 
-    public void setTransaction_date( LocalDate transaction_date) {
+    public void setTransaction_date(LocalDate transaction_date) {
         this.transaction_date = transaction_date;
     }
 
@@ -81,7 +100,6 @@ public class Transaction {
     }
 
 
-
     public int getAccount_id() {
         return account_id;
     }
@@ -89,7 +107,6 @@ public class Transaction {
     public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }
-
 
     @Override
     public String toString() {
@@ -100,6 +117,7 @@ public class Transaction {
                 ", amount=" + amount +
                 ", account_id=" + account_id +
                 ", label='" + label + '\'' +
+                ", category_id=" + category_id +
                 '}';
     }
 }
