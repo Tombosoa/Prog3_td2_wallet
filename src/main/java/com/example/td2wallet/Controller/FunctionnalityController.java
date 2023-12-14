@@ -1,11 +1,10 @@
 package com.example.td2wallet.Controller;
 
-import com.example.td2wallet.Entity.Account;
-import com.example.td2wallet.Entity.AccountDate;
-import com.example.td2wallet.Entity.Transaction;
-import com.example.td2wallet.Entity.TransferHistory;
+import com.example.td2wallet.Entity.*;
 import com.example.td2wallet.functionnality.Functionnality;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping
@@ -29,7 +28,7 @@ public class FunctionnalityController {
     }
 
 @PostMapping("/transfer")
-    public TransferHistory makeTransfer(
+    public ResponseTransfer makeTransfer(
             @RequestParam double amount,
             @RequestParam int id_account_deb,
             @RequestParam int id_account_cred
@@ -44,4 +43,13 @@ public class FunctionnalityController {
         return functionnality.getTodayBalance(account_id);
     }
 
+    @GetMapping("/getcurrencyactual")
+    public double getCurrencyActual() throws SQLException {
+        return functionnality.getCurrencyActual();
+    }
+
+    @GetMapping("/allcurrency")
+    public double getAllCurrency(@RequestParam String action) throws SQLException {
+        return functionnality.getAllCurrency(action);
+    }
 }
