@@ -22,7 +22,7 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     public Statement statement;
     @Override
     public List<Transaction> findAll() {
-        List<Transaction> deviseList = new ArrayList<>();
+        List<Transaction> transactionList = new ArrayList<>();
         try (Statement statement = conn.createStatement()) {
             String query = "SELECT * from transaction ";
             try (ResultSet result = statement.executeQuery(query)) {
@@ -35,13 +35,13 @@ public class TransactionOperation implements CrudOperation<Transaction> {
                     String label = result.getString("label");
 
                     Transaction transaction = new Transaction(id,transaction_date,transaction_type,transaction_price,account_id, label);
-                    deviseList.add(transaction);
+                    transactionList.add(transaction);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error fetching transaction from the database", e);
         }
-        return deviseList;
+        return transactionList;
     }
 
 
