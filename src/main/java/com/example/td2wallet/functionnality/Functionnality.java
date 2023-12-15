@@ -5,6 +5,7 @@ import jakarta.el.PropertyNotFoundException;
 import org.springframework.stereotype.Component;
 
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -219,17 +220,17 @@ public class Functionnality {
             int idTransaction;
             if (action.equals("Debit")) {
                 idTransaction = makeNewTransactionAct(montant, "Debit", idCompte, category_id, subcategory_id);
-                insertTransferHistory(idTransaction, 0);
+                insertTransferHistory(idTransaction, idTransaction);
             } else if (action.equals("Credit")) {
                 idTransaction = makeNewTransactionAct(montant, "Credit", idCompte, category_id, subcategory_id);
-                insertTransferHistory(0, idTransaction);
+                insertTransferHistory(idTransaction, idTransaction);
             } else {
                 throw new RuntimeException("error");
             }
 
             //insertTransferHistory(idTransactionDeb, idTransactionCred);
 
-            NewResponseTransfer responseTransfer = new NewResponseTransfer(account );
+            NewResponseTransfer responseTransfer = new NewResponseTransfer(account ,montant);
 
             return responseTransfer;
         } catch (SQLException e) {
@@ -413,4 +414,38 @@ public class Functionnality {
             throw new RuntimeException(e);
         }
     }
+
+    public SQLresp executeFunction(int id_account, String datefirst, String datelast) throws SQLException {
+        String sql = "SELECT * FROM gettotaltransac(?, ?, ?)";
+
+        try (CallableStatement statement = conn.prepareCall(sql)) {
+            String firstdate = transformSpaceToT(datefirst);
+            String lastdate = transformSpaceToT(datelast);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            statement.setInt(1, id_account);
+            statement.setTimestamp(2, Timestamp.from(firstdateTime.toInstant()));
+            statement.setTimestamp(3, Timestamp.from(lastdateTime.toInstant()));
+
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            while (resultSet.next()) {
+                BigDecimal credit = resultSet.getBigDecimal("credit");
+                BigDecimal debit = resultSet.getBigDecimal("debit");
+                int accountId = resultSet.getInt("account_id");
+
+                //System.out.println("Credit: " + credit + ", Debit: " + debit + ", Account ID: " + accountId);
+                SQLresp sqLresp = new SQLresp(accountId, debit, credit);
+                return sqLresp;
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
+    }
+
 }

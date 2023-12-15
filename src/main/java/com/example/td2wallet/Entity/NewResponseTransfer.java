@@ -3,33 +3,20 @@ package com.example.td2wallet.Entity;
 import java.sql.Date;
 
 public class NewResponseTransfer {
-    private Account AccountDebit;
-    private Account accountCredit;
+    private Account account;
+
     private double amount;
     private Date date;
     private String category_name;
     private String subcategory_name;
 
-    private Account account;
 
-    public NewResponseTransfer(Account account) {
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public Account getAccountDebit() {
-        return AccountDebit;
-    }
-
-    public void setAccountDebit(Account accountDebit) {
-        AccountDebit = accountDebit;
-    }
-
-    public Account getAccountCredit() {
-        return accountCredit;
-    }
-
-    public void setAccountCredit(Account accountCredit) {
-        this.accountCredit = accountCredit;
     }
 
     public double getAmount() {
@@ -64,25 +51,17 @@ public class NewResponseTransfer {
         this.subcategory_name = subcategory_name;
     }
 
-    public NewResponseTransfer(Account accountDebit, Account accountCredit, double amount, Date date, String category_name, String subcategory_name) {
-        AccountDebit = accountDebit;
-        this.accountCredit = accountCredit;
-        this.amount = amount;
-        this.date = date;
-        this.category_name = category_name;
-        this.subcategory_name = subcategory_name;
-    }
 
-    public NewResponseTransfer(Account accountDebit, Account accountCredit) {
-        AccountDebit = accountDebit;
-        this.accountCredit = accountCredit;
+
+    public NewResponseTransfer(Account account, double amount) {
+        this.account = account;
+        this.amount = amount;
     }
 
     @Override
     public String toString() {
         return "NewResponseTransfer{" +
-                "AccountDebit=" + AccountDebit +
-                ", accountCredit=" + accountCredit +
+                "account=" + account +
                 ", amount=" + amount +
                 ", date=" + date +
                 ", category_name='" + category_name + '\'' +
