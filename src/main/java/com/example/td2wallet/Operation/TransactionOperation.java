@@ -2,6 +2,7 @@ package com.example.td2wallet.Operation;
 
 import com.example.td2wallet.DataBaseConnection;
 import com.example.td2wallet.Entity.Devise;
+import com.example.td2wallet.Entity.SubCategory;
 import com.example.td2wallet.Entity.Transaction;
 import jakarta.el.PropertyNotFoundException;
 import org.springframework.stereotype.Component;
@@ -33,8 +34,10 @@ public class TransactionOperation implements CrudOperation<Transaction> {
                     double transaction_price = result.getDouble("amount");
                     int account_id = result.getInt("account_id");
                     String label = result.getString("label");
+                    int category_id=result.getInt("category_id");
+                    int subcategory_id=result.getInt("subcategory_id");
 
-                    Transaction transaction = new Transaction(id,transaction_date,transaction_type,transaction_price,account_id, label);
+                    Transaction transaction = new Transaction(id,transaction_date,transaction_type,transaction_price,account_id, label,category_id,subcategory_id);
                     transactionList.add(transaction);
                 }
             }
@@ -73,13 +76,15 @@ public class TransactionOperation implements CrudOperation<Transaction> {
         List<Transaction> savedTransactions = new ArrayList<>();
         try {
             for (Transaction transaction : toSave) {
-                String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label) VALUES ( ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label;";
+                String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label,category_id,subcategory_id) VALUES ( ?, ?, ?, ?, ?,?,?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label,category_id=EXCLUDED.category_id,subcategory_id=EXCLUDED.subcategory_id;";
                 PreparedStatement preparedStatement = conn.prepareStatement(query);
                 preparedStatement.setObject(1, transaction.getTransaction_date());
                 preparedStatement.setString(2, transaction.getType());
                 preparedStatement.setDouble(3, transaction.getAmount());
                 preparedStatement.setInt(4,transaction.getAccount_id());
                 preparedStatement.setString(5, transaction.getLabel());
+                preparedStatement.setInt(6,transaction.getCategory_id());
+                preparedStatement.setInt(7,transaction.getSubcategory_id());
 
 
                 preparedStatement.executeUpdate();
@@ -94,13 +99,15 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction save(Transaction toAdd) {
         try {
-            String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label) VALUES ( ?, ?, ?, ?,?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label;";
+            String query = "INSERT INTO transaction ( transaction_date, type, amount, account_id, label,category_id,subcategory_id) VALUES ( ?, ?, ?, ?, ?,?,?) ON CONFLICT (id) DO UPDATE SET transaction_date = EXCLUDED.transaction_date,type = EXCLUDED.type,amount = EXCLUDED.amount,account_id = EXCLUDED.account_id,label = EXCLUDED.label,category_id=EXCLUDED.category_id,subcategory_id=EXCLUDED.subcategory_id;";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setObject(1,toAdd.getTransaction_date());
             preparedStatement.setString(2, toAdd.getType());
             preparedStatement.setDouble(3, toAdd.getAmount());
             preparedStatement.setInt(4,toAdd.getAccount_id());
             preparedStatement.setString(5, toAdd.getLabel());
+            preparedStatement.setInt(6,toAdd.getCategory_id());
+            preparedStatement.setInt(7,toAdd.getSubcategory_id());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -111,14 +118,17 @@ public class TransactionOperation implements CrudOperation<Transaction> {
     @Override
     public Transaction update(Transaction toUpdate) {
         try {
-            String updateQuery = "UPDATE transaction SET transaction_date=?,type=?,amount=?,account_id=?, label= ? WHERE id=?";
+            String updateQuery = "UPDATE transaction SET transaction_date=?,type=?,amount=?,account_id=?, label= ? ,category_id=?,subcategory_id=?WHERE id=?";
             PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
             updateStatement.setObject(1, toUpdate.getTransaction_date());
             updateStatement.setString(2, toUpdate.getType());
             updateStatement.setDouble(3, toUpdate.getAmount());
             updateStatement.setInt(4,toUpdate.getAccount_id());
             updateStatement.setString(5, toUpdate.getLabel());
-            updateStatement.setInt(6, toUpdate.getId());
+            updateStatement.setInt(6,toUpdate.getCategory_id());
+            updateStatement.setInt(7,toUpdate.getSubcategory_id());
+            updateStatement.setInt(8, toUpdate.getId());
+
             updateStatement.executeUpdate();
 
             String selectQuery = "SELECT * FROM transaction WHERE id=?";
@@ -135,6 +145,8 @@ public class TransactionOperation implements CrudOperation<Transaction> {
                 updatedTransaction.setAmount(resultSet.getInt("amount"));
                 updatedTransaction.setAccount_id(resultSet.getInt("account_id"));
                 updatedTransaction.setLabel(resultSet.getString("label"));
+                updatedTransaction.setCategory_id(resultSet.getInt("category_id"));
+                updatedTransaction.setSubcategory_id(resultSet.getInt("subcategory_id"));
 
 
                 System.out.println("transaction updated");
