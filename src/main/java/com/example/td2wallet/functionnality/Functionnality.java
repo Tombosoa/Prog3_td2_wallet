@@ -5,6 +5,7 @@ import jakarta.el.PropertyNotFoundException;
 import org.springframework.stereotype.Component;
 
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -209,6 +210,63 @@ public class Functionnality {
         return idTransaction;
     }
 
+
+
+
+    public NewResponseTransfer makeNewTransfer(double montant, int idCompte, int category_id, int subcategory_id, String action) {
+        try {
+            Account account = getAccountById(idCompte);
+
+            int idTransaction;
+            if (action.equals("Debit")) {
+                idTransaction = makeNewTransactionAct(montant, "Debit", idCompte, category_id, subcategory_id);
+                insertTransferHistory(idTransaction, idTransaction);
+            } else if (action.equals("Credit")) {
+                idTransaction = makeNewTransactionAct(montant, "Credit", idCompte, category_id, subcategory_id);
+                insertTransferHistory(idTransaction, idTransaction);
+            } else {
+                throw new RuntimeException("error");
+            }
+
+            //insertTransferHistory(idTransactionDeb, idTransactionCred);
+
+            NewResponseTransfer responseTransfer = new NewResponseTransfer(account ,montant);
+
+            return responseTransfer;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public int makeNewTransactionAct(double amount, String action, int account_id, int category_id, int subcategory_id) {
+        int idTransaction = 0;
+        try {
+            String query = "INSERT INTO transaction (type, amount, account_id, label, category_id, subcategory_id) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement insertStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            insertStatement.setString(1, action);
+            insertStatement.setDouble(2, amount);
+            insertStatement.setInt(3, account_id);
+            insertStatement.setString(4, "make transfer");
+            insertStatement.setInt(5, category_id);
+            insertStatement.setInt(6, subcategory_id);
+            insertStatement.executeUpdate();
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                idTransaction = generatedKeys.getInt(1);
+
+                updateAccountBalance(account_id, action, amount);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idTransaction;
+    }
+
+
+
+
     private void insertTransferHistory(int idTransactionDeb, int idTransactionCred) throws SQLException {
         String query = "INSERT INTO transferHistory (id_transactiondeb, id_transactioncred) VALUES (?, ?)";
         try (PreparedStatement statementTransfer = conn.prepareStatement(query)) {
@@ -356,4 +414,122 @@ public class Functionnality {
             throw new RuntimeException(e);
         }
     }
+
+
+    public List<SQLCresp> getTotalTransacCat(int account_id, String first_date, String last_date) {
+        List<SQLCresp> resultList = new ArrayList<>();
+
+        try {
+            String query = "SELECT\n" +
+                    "    c.category_name,\n" +
+                    "    COALESCE(SUM(t.amount), 0) AS total_amount\n" +
+                    "FROM\n" +
+                    "    transaction t LEFT\n" +
+                    "JOIN\n" +
+                    "    category c ON t.category_id = c.id\n" +
+                    "WHERE\n" +
+                    "    t.transaction_date BETWEEN ? AND ?\n" +
+                    "    AND t.account_id = ?\n" +
+                    "GROUP BY\n" +
+                    "    c.category_name;";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            String firstdate = transformSpaceToT(first_date);
+            String lastdate = transformSpaceToT(last_date);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            preparedStatement.setTimestamp(1, Timestamp.from(firstdateTime.toInstant()));
+            preparedStatement.setTimestamp(2, Timestamp.from(lastdateTime.toInstant()));
+            preparedStatement.setInt(3, account_id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String category_name = resultSet.getString("category_name");
+                BigDecimal total = BigDecimal.valueOf(resultSet.getDouble("total_amount"));
+
+                SQLCresp account = new SQLCresp(category_name, total);
+                resultList.add(account);
+            }
+
+            if (resultList.isEmpty()) {
+                throw new PropertyNotFoundException("History not found");
+            }
+
+            return resultList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    public SQLresp executeFunction(int id_account, String datefirst, String datelast) throws SQLException {
+        String sql = "SELECT * FROM gettotaltransac(?, ?, ?)";
+
+        try (CallableStatement statement = conn.prepareCall(sql)) {
+            String firstdate = transformSpaceToT(datefirst);
+            String lastdate = transformSpaceToT(datelast);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            statement.setInt(1, id_account);
+            statement.setTimestamp(2, Timestamp.from(firstdateTime.toInstant()));
+            statement.setTimestamp(3, Timestamp.from(lastdateTime.toInstant()));
+
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            while (resultSet.next()) {
+                BigDecimal credit = resultSet.getBigDecimal("credit");
+                BigDecimal debit = resultSet.getBigDecimal("debit");
+                int accountId = resultSet.getInt("account_id");
+
+                //System.out.println("Credit: " + credit + ", Debit: " + debit + ", Account ID: " + accountId);
+                SQLresp sqLresp = new SQLresp(accountId, debit, credit);
+                return sqLresp;
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
+    }
+
+    public List<SQLCresp> executeFunctionC(int id_account, String datefirst, String datelast) throws SQLException {
+        List<SQLCresp> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM getnewtotaltransac(?, ?, ?)";
+
+        try (CallableStatement statement = conn.prepareCall(sql)) {
+            String firstdate = transformSpaceToT(datefirst);
+            String lastdate = transformSpaceToT(datelast);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            statement.setInt(1, id_account);
+            statement.setTimestamp(2, Timestamp.from(firstdateTime.toInstant()));
+            statement.setTimestamp(3, Timestamp.from(lastdateTime.toInstant()));
+
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            while (resultSet.next()) {
+                String category_name = resultSet.getString("category_name");
+                BigDecimal total = BigDecimal.valueOf(resultSet.getDouble("total_amount"));
+
+                SQLCresp account = new SQLCresp(category_name, total);
+
+            resultList.add(account);
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return resultList;
+    }
+
 }

@@ -35,5 +35,7 @@ SELECT '2023-12-03 05:22:13'::timestamp, 'credit', 600,'Lottery_winnings', 3,3,3
       AND label = 'Lottery_winnings'
       AND account_id = 3
       AND category_id = 3
-      AND subcategory_id = 3
 );
+
+alter table transaction add column category_id int references category(id);
+alter table transaction add column subcategory_id int references subcategory(id);
