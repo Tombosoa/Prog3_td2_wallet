@@ -3,17 +3,12 @@ package com.example.td2wallet.Operation;
 import com.example.td2wallet.DataBaseConnection;
 import com.example.td2wallet.Entity.Category;
 import com.example.td2wallet.Entity.Devise;
-import com.example.td2wallet.Enum.CategoryEnum;
-import com.example.td2wallet.Enum.TypeEnum;
 import jakarta.el.PropertyNotFoundException;
 
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.td2wallet.Enum.CategoryEnum.Vehicle;
-import static com.example.td2wallet.Enum.TypeEnum.Outgoing;
 
 public class CategoryOperation  implements CrudOperation <Category>{
     String userName = System.getenv("DB_USERNAME");
@@ -123,13 +118,4 @@ public class CategoryOperation  implements CrudOperation <Category>{
         return null;
     }
 
-
-    public static void main(String[] args) {
- CategoryOperation categoryOperation = new CategoryOperation();
-       /* Category category = new Category("Outgoing","Housing");
-        List<Category> categoryList = new ArrayList<>();
-        categoryOperation.save(category);*/
-        Category category = new Category(4,"Incoming","Housing");
-        categoryOperation.update(category);
-    }
 }
