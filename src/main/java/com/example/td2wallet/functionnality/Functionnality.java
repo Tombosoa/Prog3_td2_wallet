@@ -415,6 +415,57 @@ public class Functionnality {
         }
     }
 
+
+    public List<SQLCresp> getTotalTransacCat(int account_id, String first_date, String last_date) {
+        List<SQLCresp> resultList = new ArrayList<>();
+
+        try {
+            String query = "SELECT\n" +
+                    "    c.category_name,\n" +
+                    "    COALESCE(SUM(t.amount), 0) AS total_amount\n" +
+                    "FROM\n" +
+                    "    transaction t LEFT\n" +
+                    "JOIN\n" +
+                    "    category c ON t.category_id = c.id\n" +
+                    "WHERE\n" +
+                    "    t.transaction_date BETWEEN ? AND ?\n" +
+                    "    AND t.account_id = ?\n" +
+                    "GROUP BY\n" +
+                    "    c.category_name;";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            String firstdate = transformSpaceToT(first_date);
+            String lastdate = transformSpaceToT(last_date);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            preparedStatement.setTimestamp(1, Timestamp.from(firstdateTime.toInstant()));
+            preparedStatement.setTimestamp(2, Timestamp.from(lastdateTime.toInstant()));
+            preparedStatement.setInt(3, account_id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String category_name = resultSet.getString("category_name");
+                BigDecimal total = BigDecimal.valueOf(resultSet.getDouble("total_amount"));
+
+                SQLCresp account = new SQLCresp(category_name, total);
+                resultList.add(account);
+            }
+
+            if (resultList.isEmpty()) {
+                throw new PropertyNotFoundException("History not found");
+            }
+
+            return resultList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
     public SQLresp executeFunction(int id_account, String datefirst, String datelast) throws SQLException {
         String sql = "SELECT * FROM gettotaltransac(?, ?, ?)";
 
@@ -446,6 +497,39 @@ public class Functionnality {
             throw new RuntimeException(ex);
         }
         return null;
+    }
+
+    public List<SQLCresp> executeFunctionC(int id_account, String datefirst, String datelast) throws SQLException {
+        List<SQLCresp> resultList = new ArrayList<>();
+        String sql = "SELECT * FROM getnewtotaltransac(?, ?, ?)";
+
+        try (CallableStatement statement = conn.prepareCall(sql)) {
+            String firstdate = transformSpaceToT(datefirst);
+            String lastdate = transformSpaceToT(datelast);
+            OffsetDateTime firstdateTime = OffsetDateTime.parse(firstdate);
+            OffsetDateTime lastdateTime = OffsetDateTime.parse(lastdate);
+
+            statement.setInt(1, id_account);
+            statement.setTimestamp(2, Timestamp.from(firstdateTime.toInstant()));
+            statement.setTimestamp(3, Timestamp.from(lastdateTime.toInstant()));
+
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            while (resultSet.next()) {
+                String category_name = resultSet.getString("category_name");
+                BigDecimal total = BigDecimal.valueOf(resultSet.getDouble("total_amount"));
+
+                SQLCresp account = new SQLCresp(category_name, total);
+
+            resultList.add(account);
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return resultList;
     }
 
 }

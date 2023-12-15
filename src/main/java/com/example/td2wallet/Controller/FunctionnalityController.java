@@ -5,6 +5,7 @@ import com.example.td2wallet.functionnality.Functionnality;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping
@@ -73,6 +74,15 @@ public class FunctionnalityController {
         return functionnality.getTotalTransac(account_id, first_date, last_date);
     }
 
+    @GetMapping("/gettotaltransaccat")
+    public List<SQLCresp> getTotalTransacCat(
+            @RequestParam int account_id,
+            @RequestParam String first_date,
+            @RequestParam String last_date
+    ){
+        return functionnality.getTotalTransacCat(account_id, first_date, last_date);
+    }
+
     @GetMapping("/getsqlfunction")
     public SQLresp executeFunction(
             @RequestParam int account_id,
@@ -80,5 +90,14 @@ public class FunctionnalityController {
             @RequestParam String last_date
     ) throws SQLException {
         return functionnality.executeFunction(account_id, first_date, last_date);
+    }
+
+    @GetMapping("/getsqlfunctionc")
+    public List<SQLCresp> executeFunctionC(
+            @RequestParam int account_id,
+            @RequestParam String first_date,
+            @RequestParam String last_date
+    ) throws SQLException {
+        return functionnality.executeFunctionC(account_id, first_date, last_date);
     }
 }
