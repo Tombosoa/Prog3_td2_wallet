@@ -209,6 +209,73 @@ public class Functionnality {
         return idTransaction;
     }
 
+
+
+
+    public ResponseTransfer makeNewTransfer(double montant, int idCompteDeb, int idCompteCred) {
+        try {
+            Account accountDeb = getAccountById(idCompteDeb);
+            Account accountCred = getAccountById(idCompteCred);
+            int idTransactionDeb;
+            int idTransactionCred;
+            if (accountDeb.getCurrency_id() == accountCred.getCurrency_id()) {
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
+            } else if (accountDeb.getCurrency_id() == 1 && accountCred.getCurrency_id() == 2) {
+                double currencyToday = getCurrencyActual();
+                double montantConverti = montant / currencyToday;
+
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+            }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
+                double currencyToday = getCurrencyActual();
+                double montantConverti = montant * currencyToday;
+
+                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
+                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+            } else {
+                throw new RuntimeException("error");
+            }
+
+            insertTransferHistory(idTransactionDeb, idTransactionCred);
+
+            ResponseTransfer responseTransfer = new ResponseTransfer(accountDeb, accountCred );
+
+            return responseTransfer;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public int makeNewTransactionAct(double amount, String action, int account_id, int category_id, int subcategory_id) {
+        int idTransaction = 0;
+        try {
+            String query = "INSERT INTO transaction (type, amount, account_id, label, category_id, subcategory_id) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement insertStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            insertStatement.setString(1, action);
+            insertStatement.setDouble(2, amount);
+            insertStatement.setInt(3, account_id);
+            insertStatement.setString(4, "make transfer");
+            insertStatement.setInt(5, category_id);
+            insertStatement.setInt(6, subcategory_id);
+            insertStatement.executeUpdate();
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                idTransaction = generatedKeys.getInt(1);
+
+                updateAccountBalance(account_id, action, amount);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idTransaction;
+    }
+
+
+
+
     private void insertTransferHistory(int idTransactionDeb, int idTransactionCred) throws SQLException {
         String query = "INSERT INTO transferHistory (id_transactiondeb, id_transactioncred) VALUES (?, ?)";
         try (PreparedStatement statementTransfer = conn.prepareStatement(query)) {
