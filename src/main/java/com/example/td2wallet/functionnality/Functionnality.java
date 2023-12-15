@@ -212,34 +212,24 @@ public class Functionnality {
 
 
 
-    public ResponseTransfer makeNewTransfer(double montant, int idCompteDeb, int idCompteCred, int category_id, int subcategory_id) {
+    public NewResponseTransfer makeNewTransfer(double montant, int idCompte, int category_id, int subcategory_id, String action) {
         try {
-            Account accountDeb = getAccountById(idCompteDeb);
-            Account accountCred = getAccountById(idCompteCred);
-            int idTransactionDeb;
-            int idTransactionCred;
-            if (accountDeb.getCurrency_id() == accountCred.getCurrency_id()) {
-                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
-                idTransactionCred = makeTransactionAct(montant, "Credit", idCompteCred);
-            } else if (accountDeb.getCurrency_id() == 1 && accountCred.getCurrency_id() == 2) {
-                double currencyToday = getCurrencyActual();
-                double montantConverti = montant / currencyToday;
+            Account account = getAccountById(idCompte);
 
-                idTransactionDeb = makeNewTransactionAct(montant, "Debit", idCompteDeb, category_id, subcategory_id);
-                idTransactionCred = makeNewTransactionAct(montantConverti, "Credit", idCompteCred, category_id, subcategory_id);
-            }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
-                double currencyToday = getCurrencyActual();
-                double montantConverti = montant * currencyToday;
-
-                idTransactionDeb = makeNewTransactionAct(montant, "Debit", idCompteDeb, category_id, subcategory_id);
-                idTransactionCred = makeNewTransactionAct(montantConverti, "Credit", idCompteCred, category_id, subcategory_id);
+            int idTransaction;
+            if (action.equals("Debit")) {
+                idTransaction = makeNewTransactionAct(montant, "Debit", idCompte, category_id, subcategory_id);
+                insertTransferHistory(idTransaction, 0);
+            } else if (action.equals("Credit")) {
+                idTransaction = makeNewTransactionAct(montant, "Credit", idCompte, category_id, subcategory_id);
+                insertTransferHistory(0, idTransaction);
             } else {
                 throw new RuntimeException("error");
             }
 
-            insertTransferHistory(idTransactionDeb, idTransactionCred);
+            //insertTransferHistory(idTransactionDeb, idTransactionCred);
 
-            ResponseTransfer responseTransfer = new ResponseTransfer(accountDeb, accountCred );
+            NewResponseTransfer responseTransfer = new NewResponseTransfer(account );
 
             return responseTransfer;
         } catch (SQLException e) {

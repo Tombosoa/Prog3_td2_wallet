@@ -6,6 +6,12 @@ public class Account extends User {
     private String type;
     private double solde;
 
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
 
 
     public double getSolde() {

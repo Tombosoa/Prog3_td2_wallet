@@ -10,6 +10,12 @@ public class NewResponseTransfer {
     private String category_name;
     private String subcategory_name;
 
+    private Account account;
+
+    public NewResponseTransfer(Account account) {
+        this.account = account;
+    }
+
     public Account getAccountDebit() {
         return AccountDebit;
     }

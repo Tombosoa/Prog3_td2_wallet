@@ -85,22 +85,22 @@ CREATE TYPE subcategory_enum AS ENUM (
     'Unknown Income'
 );
 
-CREATE TABLE  IF NOT EXISTS subcategory (id SERIAL primary key,subcategory_name subcategory_enum);
-INSERT INTO subcategory ( subcategory_name)
+CREATE TABLE  IF NOT EXISTS subcategory (id SERIAL primary key,subcategory_name subcategory_enum, category_id int  references category(id));
+INSERT INTO subcategory ( subcategory_name, category_id)
 SELECT 'Fast Food'
 WHERE NOT EXISTS (
     SELECT 1 FROM subcategory
-    WHERE subcategory_name='Fast Food'
+    WHERE subcategory_name='Fast Food' and category_id = 1
     );
-INSERT INTO subcategory ( subcategory_name)
+INSERT INTO subcategory ( subcategory_name, category_id)
 SELECT 'Salaries Invoices'
     WHERE NOT EXISTS (
     SELECT 1 FROM subcategory
-    WHERE subcategory_name='Salaries Invoices'
+    WHERE subcategory_name='Salaries Invoices' and category_id = 2
     );
-INSERT INTO subcategory ( subcategory_name)
+INSERT INTO subcategory ( subcategory_name , category_id)
 SELECT 'Lottery Gambling Income'
-    WHERE NOT EXISTS (
+    WHERE NOT EXISTS(
     SELECT 1 FROM subcategory
-    WHERE subcategory_name='Lottery Gambling Income'
+    WHERE subcategory_name='Lottery Gambling Income' and category_id = 1
 );

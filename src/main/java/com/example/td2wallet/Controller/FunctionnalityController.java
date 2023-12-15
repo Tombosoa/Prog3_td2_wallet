@@ -36,6 +36,17 @@ public class FunctionnalityController {
         return functionnality.makeTransfer(amount, id_account_deb, id_account_cred);
     }
 
+    @PostMapping("/newtransfer")
+    public NewResponseTransfer makeTransfer(
+            @RequestParam double amount,
+            @RequestParam int id_account,
+            @RequestParam int category_id,
+            @RequestParam int subcategory_id,
+            @RequestParam String action
+    ){
+        return functionnality.makeNewTransfer(amount, id_account, category_id, subcategory_id, action);
+    }
+
     @GetMapping("/gettodaybalance")
     public AccountDate getTodayBalance(
             @RequestParam int account_id
