@@ -212,7 +212,7 @@ public class Functionnality {
 
 
 
-    public ResponseTransfer makeNewTransfer(double montant, int idCompteDeb, int idCompteCred) {
+    public ResponseTransfer makeNewTransfer(double montant, int idCompteDeb, int idCompteCred, int category_id, int subcategory_id) {
         try {
             Account accountDeb = getAccountById(idCompteDeb);
             Account accountCred = getAccountById(idCompteCred);
@@ -225,14 +225,14 @@ public class Functionnality {
                 double currencyToday = getCurrencyActual();
                 double montantConverti = montant / currencyToday;
 
-                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
-                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+                idTransactionDeb = makeNewTransactionAct(montant, "Debit", idCompteDeb, category_id, subcategory_id);
+                idTransactionCred = makeNewTransactionAct(montantConverti, "Credit", idCompteCred, category_id, subcategory_id);
             }else if(accountDeb.getCurrency_id() == 2 && accountCred.getCurrency_id() == 1){
                 double currencyToday = getCurrencyActual();
                 double montantConverti = montant * currencyToday;
 
-                idTransactionDeb = makeTransactionAct(montant, "Debit", idCompteDeb);
-                idTransactionCred = makeTransactionAct(montantConverti, "Credit", idCompteCred);
+                idTransactionDeb = makeNewTransactionAct(montant, "Debit", idCompteDeb, category_id, subcategory_id);
+                idTransactionCred = makeNewTransactionAct(montantConverti, "Credit", idCompteCred, category_id, subcategory_id);
             } else {
                 throw new RuntimeException("error");
             }
