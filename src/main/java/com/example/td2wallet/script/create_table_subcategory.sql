@@ -1,106 +1,110 @@
 CREATE TYPE subcategory_enum AS ENUM (
-  'Food and Drinks',
+  'Food_and_Drinks',
     'Groceries',
-    'Coffee Shops',
-    'Fast Food',
-    'Online Shopping',
+    'Coffee_Shops',
+    'Fast_Food',
+    'Online_Shopping',
     'Pets',
-    'Jewelry Accessories',
+    'Jewelry_Accessories',
     'Gifts',
-    'Electronics Accessories',
+    'Electronics_Accessories',
     'Children',
-    'Home Garden',
+    'Home_Garden',
     'Stationery',
-    'Pharmacy Convenience',
-    'Health Beauty',
-    'Leisure Time',
-    'Clothing Shoes',
+    'Pharmacy_Convenience',
+    'Health_Beauty',
+    'Leisure_Time',
+    'Clothing_Shoes',
     'Housing',
-    'Property Insurance',
+    'Property_Insurance',
     'Utilities',
-    'Maintenance Repairs',
+    'Maintenance_Repairs',
     'Rent',
     'Mortgage',
     'Services',
     'Transportation',
-    'Long Distance',
+    'Long_Distance',
     'Taxi',
-    'Public Transportation',
-    'Business Travel',
+    'Public_Transportation',
+    'Business_Travel',
     'Vehicle',
-    'Vehicle Insurance',
+    'Vehicle_Insurance',
     'Fuel',
-    'Vehicle Maintenance',
+    'Vehicle_Maintenance',
     'Rental',
     'Rentals',
     'Parking',
     'Leisure',
-    'Alcohol Tobacco',
-    'Wellness Beauty',
-    'Culture Sports Events',
-    'Education Development',
-    'Life Events',
-    'Books Audio Subscriptions',
+    'Alcohol_Tobacco',
+    'Wellness_Beauty',
+    'Culture_Sports_Events',
+    'Education_Development',
+    'Life_Events',
+    'Books_Audio_Subscriptions',
     'Hobbies',
-    'Lottery Gambling',
-    'Charity Organization',
-    'Healthcare Doctor',
-    'Sports Fitness',
-    'TV Streaming',
-    'Holidays Travel Hotels',
-    'Multimedia Computers',
+    'Lottery_Gambling',
+    'Charity_Organization',
+    'Healthcare_Doctor',
+    'Sports_Fitness',
+    'TV_Streaming',
+    'Holidays_Travel_Hotels',
+    'Multimedia_Computers',
     'Internet',
-    'Software Applications Games',
-    'Postal Services',
-    'Phone Mobile Phone',
-    'Financial Expenses',
-    'Family Allowances',
+    'Software_Applications_Games',
+    'Postal_Services',
+    'Phone_Mobile_Phone',
+    'Financial_Expenses',
+    'Family_Allowances',
     'Fines',
     'Insurances',
     'Warning',
-    'Charges Fees',
-    'Loan Interest',
+    'Charges_Fees',
+    'Loan_Interest',
     'Taxes',
     'Investments',
-    'Real Estate',
+    'Real_Estate',
     'Collections',
     'Savings',
-    'Financial Investments'
-    'Vehicles Personal Property',
+    'Financial_Investments',
+    'Vehicles_Personal_Property',
     'Income',
-    'Family Allowances Income',
-    'Gifts Income',
-    'Checks Discounts',
-    'Subsidies Donations',
-    'Interests Dividends',
-    'Lottery Gambling Income',
-    'Loan Rental',
-    'Refunds Tax Purchases',
-    'Rental Income',
-    'Salaries Invoices',
+    'Family_Allowances_Income',
+    'Gifts_Income',
+    'Checks_Discounts',
+    'Subsidies_Donations',
+    'Interests_Dividends',
+    'Lottery_Gambling_Income',
+    'Loan_Rental',
+    'Refunds_Tax_Purchases',
+    'Rental_Income',
+    'Salaries_Invoices',
     'Sales',
     'Other',
     'Missing',
-    'Unknown Expense',
-    'Unknown Income'
+    'Unknown_Expense',
+    'Unknown_Income'
+
 );
 
-CREATE TABLE  IF NOT EXISTS subcategory (id SERIAL primary key,subcategory_name subcategory_enum);
-INSERT INTO subcategory ( subcategory_name)
-SELECT 'Fast Food'
+CREATE TABLE  IF NOT EXISTS subcategory (id SERIAL primary key,subcategory_name subcategory_enum,category_id int references category (id));
+INSERT INTO subcategory ( subcategory_name,category_id)
+SELECT 'Fast_Food',1
 WHERE NOT EXISTS (
     SELECT 1 FROM subcategory
-    WHERE subcategory_name='Fast Food'
+    WHERE subcategory_name='Fast_Food'
+    AND category_id =1
     );
-INSERT INTO subcategory ( subcategory_name)
-SELECT 'Salaries Invoices'
+INSERT INTO subcategory ( subcategory_name,category_id)
+SELECT 'Salaries_Invoices',2
     WHERE NOT EXISTS (
     SELECT 1 FROM subcategory
-    WHERE subcategory_name='Salaries Invoices'
+    WHERE subcategory_name='Salaries_Invoices'
+     AND category_id =2
     );
-INSERT INTO subcategory ( subcategory_name)
-SELECT 'Lottery Gambling Income'
+INSERT INTO subcategory ( subcategory_name,category_id)
+SELECT 'Lottery_Gambling_Income',3
     WHERE NOT EXISTS (
     SELECT 1 FROM subcategory
-    WHERE subcategory_name='Lottery Gambling Income'
+    WHERE subcategory_name='Lottery_Gambling_Income'
+     AND category_id =3
 );
