@@ -115,13 +115,4 @@ public class SubcategoryOperation implements CrudOperation<SubCategory>{
         return null;
     }
 
-    public static void main(String[] args) {
-        SubcategoryOperation subcategoryOperation = new SubcategoryOperation();
-      /*  System.out.println(subcategoryOperation.findAll());
-        List<SubCategory> subCategoryList = new ArrayList<>();
-        subCategoryList.add(subCategory);
-        subcategoryOperation.save(subCategory);*/
-        SubCategory subCategory = new SubCategory(4,"Gifts",3);
-        subcategoryOperation.update(subCategory);
-    }
 }
