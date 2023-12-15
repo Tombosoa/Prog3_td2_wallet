@@ -3,6 +3,7 @@ package com.example.td2wallet.Entity;
 import java.sql.Date;
 import java.time.LocalDate;
 
+
 public class Transaction {
     private int id;
     private LocalDate transaction_date;
@@ -12,6 +13,29 @@ public class Transaction {
 
     private String label;
     private int category_id;
+    private int subcategory_id;
+
+
+
+
+    public int getSubcategory_id() {
+        return subcategory_id;
+    }
+
+    public void setSubcategory_id(int subcategory_id) {
+        this.subcategory_id = subcategory_id;
+    }
+
+    public Transaction(int id, LocalDate transaction_date, String type, double amount, int account_id, String label, int category_id, int subcategory_id) {
+        this.id = id;
+        this.transaction_date = transaction_date;
+        this.type = type;
+        this.amount = amount;
+        this.account_id = account_id;
+        this.label = label;
+        this.category_id = category_id;
+        this.subcategory_id = subcategory_id;
+    }
 
     public String getType() {
         return type;
@@ -58,6 +82,16 @@ public class Transaction {
         this.account_id = account_id;
         this.label = label;
         this.category_id = category_id;
+    }
+
+    public Transaction(LocalDate transaction_date, String type, double amount, int account_id, String label, int category_id, int subcategory_id) {
+        this.transaction_date = transaction_date;
+        this.type = type;
+        this.amount = amount;
+        this.account_id = account_id;
+        this.label = label;
+        this.category_id = category_id;
+        this.subcategory_id = subcategory_id;
     }
 
     public Transaction(int id) {

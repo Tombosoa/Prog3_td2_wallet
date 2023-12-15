@@ -1,15 +1,21 @@
 package com.example.td2wallet.Entity;
 
-import com.example.td2wallet.Enum.CategoryEnum;
-import com.example.td2wallet.Enum.TypeEnum;
-
 public class Category {
     private int id;
-    private TypeEnum type;
-    private CategoryEnum category_name;
+    private String type;
+    private String category_name;
 
-    public Category(int id, TypeEnum type, CategoryEnum category_name) {
+    public Category(int id, String type, String category_name) {
         this.id = id;
+        this.type = type;
+        this.category_name = category_name;
+    }
+
+    public Category() {
+
+    }
+
+    public Category(String type, String category_name) {
         this.type = type;
         this.category_name = category_name;
     }
@@ -22,20 +28,20 @@ public class Category {
         this.id = id;
     }
 
-    public TypeEnum getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(TypeEnum type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public CategoryEnum getCategory_name() {
-        return category_name;
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
     }
 
-    public void setCategory_name(CategoryEnum category_name) {
-        this.category_name = category_name;
+    public String getCategory_name() {
+        return category_name;
     }
 
     @Override
