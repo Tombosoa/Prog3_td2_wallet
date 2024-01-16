@@ -5,6 +5,7 @@ import com.example.td2wallet.Operation.TransactionOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,6 @@ public class TransactionController {
     public Transaction getOneTransaction(@PathVariable("id") int id){
         return transactionOperation.getOne(id);
     }
-
 
 
     @PutMapping("/transaction")
