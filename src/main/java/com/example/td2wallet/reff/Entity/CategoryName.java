@@ -1,8 +1,8 @@
 package com.example.td2wallet.reff.Entity;
 
 public enum CategoryName {
-    INCOME("Income"),
-    EXPENSE("Expense"),
+    Income("Income"),
+    Vehicle("Vehicle"),
     Housing("Housing"),
     Other("Other");
 

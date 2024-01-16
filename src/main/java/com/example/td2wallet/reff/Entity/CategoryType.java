@@ -2,6 +2,7 @@ package com.example.td2wallet.reff.Entity;
 
 public enum CategoryType {
     Loan("Loan"),
+    INcoming("Incoming"),
     Outgoing("Outgoing");
 
     private final String label;

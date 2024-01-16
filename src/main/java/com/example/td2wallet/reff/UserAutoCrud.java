@@ -26,7 +26,7 @@ public class UserAutoCrud<U> extends Service<User>{
         toSave.setEmail("username@gmail.com");
         toSave.setPassword("password");
 
-        System.out.println(userService.save(toSave));
+        //System.out.println(userService.save(toSave));
         System.out.println(users);
     }
 }

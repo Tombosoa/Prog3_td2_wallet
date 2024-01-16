@@ -88,7 +88,6 @@ public class Service<T> implements AutoCrudOperation<T>{
                             Class<?> fieldType = field.getType();
 
                             if (fieldType.isEnum()) {
-                                // Handle enum types
                                 String enumValue = resultSet.getString(columnName);
                                 if (enumValue != null) {
                                     Object[] enumConstants = fieldType.getEnumConstants();
@@ -165,7 +164,9 @@ public class Service<T> implements AutoCrudOperation<T>{
 
         return toSave;
     }
-
+/*
+* This is a method for prepared statement, and also, catch if there's a column of type enum
+* */
     private void setPreparedStatementValues(PreparedStatement preparedStatement, T entity)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         List<String> columnNames = getColumnNamesWithoutId();
@@ -186,7 +187,9 @@ public class Service<T> implements AutoCrudOperation<T>{
         }
     }
 
-
+/*
+* This method is for generating the correct insert query for the entity that extends this class
+* */
     private String generateInsertQuery() {
         String tableName = getSafeTableName(entityClass.getSimpleName().toLowerCase());
         List<String> columnNames = getColumnNamesWithoutId();
@@ -207,7 +210,9 @@ public class Service<T> implements AutoCrudOperation<T>{
         return "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
     }
 
-
+/*
+* this method get the column's name of the entity without the id using reflect
+* */
     private List<String> getColumnNamesWithoutId() {
         Field[] fields = entityClass.getDeclaredFields();
         List<String> columnNames = new ArrayList<>();
