@@ -2,6 +2,7 @@ package com.example.td2wallet.Controller;
 
 import com.example.td2wallet.Entity.User;
 import com.example.td2wallet.Operation.UserOperation;
+import com.example.td2wallet.reff.UserAutoCrud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +13,12 @@ import java.util.UUID;
 @RequestMapping
 public class UserController {
     private final UserOperation userOperation;
+   // private final UserAutoCrud userAutoCrud;
 
     @Autowired
     public UserController(UserOperation userOperation) {
         this.userOperation = userOperation;
+      //  this.userAutoCrud = userAutoCrud;
     }
 
     @GetMapping("/users")
@@ -47,4 +50,9 @@ public class UserController {
     public void deleteUser(@PathVariable("uid") UUID uid){
         userOperation.deleteUser(uid);
     }
+
+  /*  @GetMapping(path = "allusers")
+    public List<User> findAllUsers(){
+        return userAutoCrud.findAll();
+    }*/
 }
